@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARO Dashboard — BSMG</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1a2e;
+      --navy-light: #1a2a45;
+      --navy-mid: #243352;
+      --blue: #3b82f6;
+      --blue-glow: #60a5fa;
+      --cyan: #22d3ee;
+      --green: #34d399;
+      --green-bg: rgba(52, 211, 153, 0.1);
+      --red: #f87171;
+      --red-bg: rgba(248, 113, 113, 0.1);
+      --yellow: #fbbf24;
+      --yellow-bg: rgba(251, 191, 36, 0.1);
+      --slate: #94a3b8;
+      --slate-dim: #64748b;
+      --white: #f1f5f9;
+      --card-bg: rgba(26, 42, 69, 0.6);
+      --card-border: rgba(59, 130, 246, 0.15);
+      --font: 'DM Sans', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: 
+        radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(34, 211, 238, 0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px; position: relative; z-index: 1; }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .header-left h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--white) 0%, var(--blue-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-left .subtitle {
+      font-size: 13px;
+      color: var(--slate-dim);
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+    .header-right {
+      text-align: right;
+    }
+    .last-updated {
+      font-size: 12px;
+      color: var(--slate-dim);
+      font-family: var(--mono);
+    }
+    .batch-id {
+      font-size: 11px;
+      color: var(--slate-dim);
+      font-family: var(--mono);
+      margin-top: 2px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--mono);
+      margin-top: 8px;
+    }
+    .status-badge.live { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .status-badge.stale { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(251, 191, 36, 0.3); }
+    .status-badge.error { background: var(--red-bg); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: rgba(59, 130, 246, 0.35); }
+    .stat-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--slate-dim);
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      font-family: var(--mono);
+      line-height: 1;
+    }
+    .stat-value.green { color: var(--green); }
+    .stat-value.red { color: var(--red); }
+    .stat-value.yellow { color: var(--yellow); }
+    .stat-value.blue { color: var(--blue-glow); }
+    .stat-value.cyan { color: var(--cyan); }
+    .stat-sub {
+      font-size: 12px;
+      color: var(--slate-dim);
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      margin-top: 8px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .section-count {
+      font-size: 12px;
+      color: var(--slate-dim);
+      font-family: var(--mono);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: var(--navy-light);
+      padding: 4px;
+      border-radius: 10px;
+      width: fit-content;
+    }
+    .tab {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      font-family: var(--font);
+    }
+    .tab:hover { color: var(--white); }
+    .tab.active {
+      background: var(--navy-mid);
+      color: var(--white);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .tab .badge {
+      display: inline-block;
+      min-width: 20px;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-family: var(--mono);
+      margin-left: 6px;
+      text-align: center;
+    }
+    .tab .badge.green { background: var(--green-bg); color: var(--green); }
+    .tab .badge.red { background: var(--red-bg); color: var(--red); }
+    .tab .badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
+
+    /* Table */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      margin-bottom: 32px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--slate-dim);
+      background: rgba(15, 26, 46, 0.5);
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 600;
+    }
+    td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.08);
+      color: var(--slate);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(59, 130, 246, 0.04); }
+    td.policy-num { font-family: var(--mono); color: var(--white); font-weight: 500; }
+    td.value { font-family: var(--mono); color: var(--cyan); text-align: right; }
+    td.name { color: var(--white); font-weight: 500; }
+    td.carrier { color: var(--slate); }
+    td.agent-name { color: var(--slate-dim); font-size: 12px; }
+
+    .status-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      font-family: var(--mono);
+    }
+    .status-pill.active { background: var(--green-bg); color: var(--green); }
+    .status-pill.inactive { background: rgba(100, 116, 139, 0.15); color: var(--slate-dim); }
+    .status-pill.error { background: var(--red-bg); color: var(--red); }
+
+    .doc-link {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+    .doc-link:hover { text-decoration: underline; }
+
+    /* Carrier Breakdown */
+    .carrier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .carrier-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .carrier-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .carrier-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 2px 0;
+    }
+    .carrier-stat span:first-child { color: var(--slate-dim); }
+    .carrier-stat span:last-child { font-family: var(--mono); }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--slate-dim);
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+    .empty-state p { font-size: 14px; }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--slate-dim);
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+    .loading::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 32px;
+      margin: 16px auto 0;
+      border: 2px solid var(--card-border);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .header { flex-direction: column; gap: 12px; }
+      .header-right { text-align: left; }
+      .container { padding: 16px; }
+    }
+
+    /* Panel for dialer export */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .action-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: var(--navy-light);
+      color: var(--slate);
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .action-btn:hover {
+      border-color: var(--blue);
+      color: var(--white);
+      background: var(--navy-mid);
+    }
+    .action-btn.primary {
+      background: rgba(59, 130, 246, 0.15);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: var(--blue-glow);
+    }
+    .action-btn.primary:hover {
+      background: rgba(59, 130, 246, 0.25);
+    }
+
+    /* History mini chart */
+    .history-bar {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 40px;
+      margin-top: 12px;
+    }
+    .history-bar .bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      min-width: 8px;
+      max-width: 24px;
+      transition: height 0.3s;
+    }
+    .history-bar .bar.green { background: var(--green); opacity: 0.7; }
+    .history-bar .bar.red { background: var(--red); opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <div class="loading">Loading dashboard data...</div>
+  </div>
+
+  <script>
+    const DATA_URL = './data/results.json';
+
+    async function loadData() {
+      try {
+        const resp = await fetch(DATA_URL + '?t=' + Date.now());
+        if (!resp.ok) throw new Error('No data file found');
+        return await resp.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function timeSince(dateStr) {
+      const now = new Date();
+      const then = new Date(dateStr);
+      const mins = Math.floor((now - then) / 60000);
+      if (mins < 1) return 'just now';
+      if (mins < 60) return mins + 'm ago';
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + 'h ago';
+      const days = Math.floor(hrs / 24);
+      return days + 'd ago';
+    }
+
+    function dataStatus(dateStr) {
+      const mins = (Date.now() - new Date(dateStr).getTime()) / 60000;
+      if (mins < 120) return 'live';
+      if (mins < 1440) return 'stale';
+      return 'error';
+    }
+
+    function formatCurrency(val) {
+      if (!val || val === 'N/A') return 'N/A';
+      const str = String(val).replace(/[^0-9.\-]/g, '');
+      const num = parseFloat(str);
+      if (isNaN(num)) return val;
+      return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getCarrierBreakdown(tasks) {
+      const carriers = {};
+      tasks.forEach(t => {
+        const c = t.carrier || 'Unknown';
+        if (!carriers[c]) carriers[c] = { active: 0, inactive: 0, error: 0, total: 0, premium: 0 };
+        carriers[c].total++;
+        carriers[c][t.status || 'error']++;
+        if (t.status === 'active' && t.account_value) {
+          const v = parseFloat(String(t.account_value).replace(/[^0-9.\-]/g, ''));
+          if (!isNaN(v)) carriers[c].premium += v;
+        }
+      });
+      return carriers;
+    }
+
+    function exportDialerCSV(tasks) {
+      const active = tasks.filter(t => t.status === 'active');
+      const headers = ['Policy Number', 'Client Name', 'Agent', 'Phone', 'Carrier', 'Account Value', 'Surrender Date'];
+      const rows = active.map(t => [
+        t.policy_number || '', t.applicant || '', t.agents || '', t.agent_phone || '',
+        t.carrier || '', t.account_value || '', t.surrender_date || ''
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'aro_dialer_export_' + new Date().toISOString().slice(0, 10) + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function render(data) {
+      const app = document.getElementById('app');
+
+      if (!data || !data.batch) {
+        app.innerHTML = `
+          <div class="header">
+            <div class="header-left">
+              <h1>ARO Dashboard</h1>
+              <div class="subtitle">BSMG Annuity Renewal Operations</div>
+            </div>
+          </div>
+          <div class="empty-state">
+            <div class="icon">📋</div>
+            <p>No batch data available yet.</p>
+            <p style="margin-top:8px;font-size:12px;font-family:var(--mono);">The agent will populate this dashboard after its first run.</p>
+          </div>`;
+        return;
+      }
+
+      const b = data.batch;
+      const tasks = data.tasks || [];
+      const history = data.history || [];
+      const active = tasks.filter(t => t.status === 'active');
+      const inactive = tasks.filter(t => t.status === 'inactive');
+      const errors = tasks.filter(t => t.status === 'error');
+      const carriers = getCarrierBreakdown(tasks);
+      const ds = dataStatus(b.timestamp);
+      const successRate = b.total > 0 ? Math.round(((b.total - (b.errors || errors.length)) / b.total) * 100) : 0;
+
+      let totalValue = 0;
+      active.forEach(t => {
+        const v = parseFloat(String(t.account_value || '0').replace(/[^0-9.\-]/g, ''));
+        if (!isNaN(v)) totalValue += v;
+      });
+
+      app.innerHTML = `
+        <div class="header">
+          <div class="header-left">
+            <h1>ARO Dashboard</h1>
+            <div class="subtitle">BSMG Annuity Renewal Operations</div>
+          </div>
+          <div class="header-right">
+            <div class="last-updated">Updated ${timeSince(b.timestamp)}</div>
+            <div class="batch-id">${b.timestamp || ''}</div>
+            <span class="status-badge ${ds}">${ds === 'live' ? '● Live' : ds === 'stale' ? '◐ Stale' : '○ Outdated'}</span>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Tasks</div>
+            <div class="stat-value blue">${b.total || tasks.length}</div>
+            <div class="stat-sub">${Object.keys(carriers).length} carrier${Object.keys(carriers).length !== 1 ? 's' : ''}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active</div>
+            <div class="stat-value green">${active.length}</div>
+            <div class="stat-sub">ready for contact</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Inactive</div>
+            <div class="stat-value" style="color:var(--slate-dim)">${inactive.length}</div>
+            <div class="stat-sub">removed from queue</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Errors</div>
+            <div class="stat-value ${errors.length > 0 ? 'red' : ''}">${errors.length}</div>
+            <div class="stat-sub">${errors.length > 0 ? 'needs review' : 'none'}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Success Rate</div>
+            <div class="stat-value ${successRate >= 90 ? 'green' : successRate >= 80 ? 'yellow' : 'red'}">${successRate}%</div>
+            <div class="stat-sub">target: 90%+</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active Value</div>
+            <div class="stat-value cyan">${totalValue > 0 ? '$' + (totalValue / 1000).toFixed(0) + 'k' : 'N/A'}</div>
+            <div class="stat-sub">${totalValue > 0 ? formatCurrency(totalValue) : 'pending extraction'}</div>
+          </div>
+        </div>
+
+        ${Object.keys(carriers).length > 1 ? `
+        <div class="section-header">
+          <div class="section-title">Carrier Breakdown</div>
+        </div>
+        <div class="carrier-grid">
+          ${Object.entries(carriers).map(([name, c]) => `
+            <div class="carrier-card">
+              <div class="carrier-name">${name}</div>
+              <div class="carrier-stat"><span>Total</span><span>${c.total}</span></div>
+              <div class="carrier-stat"><span>Active</span><span style="color:var(--green)">${c.active}</span></div>
+              <div class="carrier-stat"><span>Inactive</span><span>${c.inactive}</span></div>
+              ${c.error > 0 ? `<div class="carrier-stat"><span>Errors</span><span style="color:var(--red)">${c.error}</span></div>` : ''}
+              ${c.premium > 0 ? `<div class="carrier-stat"><span>Value</span><span style="color:var(--cyan)">${formatCurrency(c.premium)}</span></div>` : ''}
+            </div>
+          `).join('')}
+        </div>` : ''}
+
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="active">Active <span class="badge green">${active.length}</span></button>
+          <button class="tab" data-tab="inactive">Inactive <span class="badge">${inactive.length}</span></button>
+          ${errors.length > 0 ? `<button class="tab" data-tab="errors">Errors <span class="badge red">${errors.length}</span></button>` : ''}
+          <button class="tab" data-tab="all">All <span class="badge">${tasks.length}</span></button>
+        </div>
+
+        <div class="action-bar" id="action-bar">
+          <button class="action-btn primary" onclick="exportDialerCSV(window.__tasks)">Export Active to Dialer CSV</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Client</th>
+                <th>Policy #</th>
+                <th>Carrier</th>
+                <th>Account Value</th>
+                <th>Surrender Value</th>
+                <th>Surrender Date</th>
+                <th>Agent</th>
+                <th>Docs</th>
+              </tr>
+            </thead>
+            <tbody id="task-table"></tbody>
+          </table>
+        </div>
+
+        ${b.processing_time || b.ai_calls !== undefined ? `
+        <div class="section-header">
+          <div class="section-title">Batch Metrics</div>
+        </div>
+        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
+          ${b.processing_time ? `<div class="stat-card"><div class="stat-label">Processing Time</div><div class="stat-value blue" style="font-size:24px">${b.processing_time}</div></div>` : ''}
+          ${b.ai_calls !== undefined ? `<div class="stat-card"><div class="stat-label">AI Calls</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.ai_calls}</div></div>` : ''}
+          ${b.ai_cost !== undefined ? `<div class="stat-card"><div class="stat-label">AI Cost</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.ai_cost}</div></div>` : ''}
+          ${b.manual_interventions !== undefined ? `<div class="stat-card"><div class="stat-label">Manual Assists</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.manual_interventions}</div></div>` : ''}
+        </div>` : ''}
+
+        ${history.length > 1 ? `
+        <div class="section-header">
+          <div class="section-title">Batch History (Last ${history.length} runs)</div>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Date</th><th>Total</th><th>Active</th><th>Inactive</th><th>Errors</th><th>Success Rate</th><th>Time</th></tr></thead>
+            <tbody>
+              ${history.map(h => {
+                const sr = h.total > 0 ? Math.round(((h.total - h.errors) / h.total) * 100) : 0;
+                return `<tr>
+                  <td style="font-family:var(--mono);color:var(--white)">${h.date || ''}</td>
+                  <td style="font-family:var(--mono)">${h.total}</td>
+                  <td style="font-family:var(--mono);color:var(--green)">${h.active}</td>
+                  <td style="font-family:var(--mono)">${h.inactive}</td>
+                  <td style="font-family:var(--mono);${h.errors > 0 ? 'color:var(--red)' : ''}">${h.errors}</td>
+                  <td style="font-family:var(--mono);${sr >= 90 ? 'color:var(--green)' : sr >= 80 ? 'color:var(--yellow)' : 'color:var(--red)'}">${sr}%</td>
+                  <td style="font-family:var(--mono);color:var(--slate-dim)">${h.processing_time || ''}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>` : ''}
+      `;
+
+      // Store for export
+      window.__tasks = tasks;
+
+      // Render initial table
+      renderTable(active);
+
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const view = tab.dataset.tab;
+          const actionBar = document.getElementById('action-bar');
+          if (view === 'active') { renderTable(active); actionBar.style.display = 'flex'; }
+          else if (view === 'inactive') { renderTable(inactive); actionBar.style.display = 'none'; }
+          else if (view === 'errors') { renderTable(errors); actionBar.style.display = 'none'; }
+          else { renderTable(tasks); actionBar.style.display = 'flex'; }
+        });
+      });
+    }
+
+    function renderTable(rows) {
+      const tbody = document.getElementById('task-table');
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--slate-dim)">No tasks in this view</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map(t => `
+        <tr>
+          <td><span class="status-pill ${t.status}">${t.status === 'active' ? '✓ Active' : t.status === 'inactive' ? '✗ Inactive' : '⚠ Error'}</span></td>
+          <td class="name">${t.applicant || 'N/A'}</td>
+          <td class="policy-num">${t.policy_number || t.app_id || 'N/A'}</td>
+          <td class="carrier">${t.carrier || 'N/A'}</td>
+          <td class="value">${t.status === 'active' ? formatCurrency(t.account_value) : ''}</td>
+          <td class="value">${t.status === 'active' ? formatCurrency(t.surrender_value) : ''}</td>
+          <td style="font-family:var(--mono);font-size:12px">${t.surrender_date || ''}</td>
+          <td class="agent-name">${t.agents || 'N/A'}</td>
+          <td>${(t.documents || []).map(d => '<a class="doc-link" href="docs/' + d + '" target="_blank">📄</a>').join(' ') || ''}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Init
+    loadData().then(render);
+
+    // Auto-refresh every 5 minutes
+    setInterval(() => loadData().then(render), 300000);
+  </script>
+</body>
+</html>
