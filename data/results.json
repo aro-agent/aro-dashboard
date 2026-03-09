@@ -1,102 +1,108 @@
 {
-  "batch": {
-    "timestamp": "2026-03-08T09:20:00-05:00",
-    "total": 10,
-    "reviewed": 10,
-    "active": 2,
-    "inactive": 0,
-    "errors": 0,
-    "other_carriers": 8,
-    "processing_time": "15m 30s",
-    "ai_calls": 47,
-    "ai_cost": "$0.15",
-    "manual_interventions": 0,
-    "note": "Scanned 10 most recent HubSpot tasks; 2 MassMutual Ascend (both active), 8 other carriers (Anico, Athene, Global Atlantic, Lincoln, Corebridge — not yet configured)"
-  },
-  "tasks": [
-    {
-      "app_id": "21854197",
-      "policy_number": "1192073165",
-      "status": "active",
-      "carrier": "MassMutual Ascend",
-      "plan": "Safe Return Q",
-      "applicant": "Johnson, Donna L",
-      "agents": "Causey, Donna D",
-      "agent_phone": "",
-      "surrender_date": "03/15/2026",
-      "age_at_surrender": "68.12",
-      "base_premium": "129276.35",
-      "account_value": "$130,282.14",
-      "surrender_value": "$147,970.98",
-      "issue_date": "03/15/2016",
-      "documents": [],
-      "verified": "2026-03-08T09:15:00-05:00",
-      "notes": "Rider: IncomeSecure (Active). GMSV: $146,145.27. Surrender value exceeds AV due to guaranteed minimum — normal for this product."
-    },
-    {
-      "app_id": "24944002",
-      "policy_number": "1196053039",
-      "status": "active",
-      "carrier": "MassMutual Ascend",
-      "plan": "American Legend III Q",
-      "applicant": "Kilo-Smith, Jeanette",
-      "agents": "Frigeri, John L",
-      "agent_phone": "",
-      "surrender_date": "02/26/2026",
-      "age_at_surrender": "64.88",
-      "base_premium": "250000",
-      "account_value": "$328,133.69",
-      "surrender_value": "$328,193.69",
-      "issue_date": "02/26/2019",
-      "documents": [],
-      "verified": "2026-03-08T09:18:00-05:00",
-      "notes": "GMSV: $300,627.99. Surrender charge period ended — AV closely matches SV."
-    },
-    {
-      "app_id": "21960137",
-      "policy_number": "1195074344",
-      "status": "active",
-      "carrier": "MassMutual Ascend",
-      "plan": "American Valor 10 (Trail AV)",
-      "applicant": "Gilmore, Donald R",
-      "agents": "Little, Bradley W",
-      "agent_phone": "",
-      "surrender_date": "03/22/2026",
-      "age_at_surrender": "75.22",
-      "base_premium": "200000",
-      "account_value": "$232,002.34",
-      "surrender_value": "$228,477.12",
-      "issue_date": "03/22/2016",
-      "documents": [],
-      "verified": "2026-03-08T09:08:00-05:00",
-      "notes": "Rider: IncomeSecure (Active). GMSV: $220,649.58. (From POC batch review)"
-    }
-  ],
-  "summary": {
-    "total_account_value": "$690,418.17",
-    "active_policies": 3,
-    "ready_for_contact": 3,
-    "by_carrier": {
-      "MassMutual Ascend": {
-        "reviewed": 2,
-        "active": 2,
-        "total_av": "$690,418.17"
-      },
-      "Other Carriers": {
-        "reviewed": 8,
-        "note": "Anico, Athene (3x), Global Atlantic, Lincoln, Corebridge (2x) — not yet configured"
-      }
-    }
-  },
-  "history": [
-    {
-      "date": "2026-03-08",
-      "batch": "10-task review (2 MassMutual)",
-      "total": 10,
-      "active": 2,
-      "inactive": 0,
-      "errors": 0,
-      "processing_time": "15m 30s"
-    }
-  ]
+    "batch":  {
+                  "timestamp":  "2026-03-08T20:48:16.5836326-04:00",
+                  "total":  10,
+                  "reviewed":  10,
+                  "active":  2,
+                  "inactive":  0,
+                  "errors":  0,
+                  "other_carriers":  8,
+                  "processing_time":  "15m 30s",
+                  "ai_calls":  47,
+                  "ai_cost":  "$0.15",
+                  "manual_interventions":  0,
+                  "note":  "Scanned 10 most recent HubSpot tasks; 2 MassMutual Ascend (both active), 8 other carriers (Anico, Athene, Global Atlantic, Lincoln, Corebridge — not yet configured)"
+              },
+    "tasks":  [
+                  {
+                      "app_id":  "21854197",
+                      "policy_number":  "1192073165",
+                      "status":  "active",
+                      "carrier":  "MassMutual Ascend",
+                      "plan":  "Safe Return Q",
+                      "applicant":  "Johnson, Donna L",
+                      "agents":  "Causey, Donna D",
+                      "agent_phone":  "",
+                      "surrender_date":  "03/15/2026",
+                      "age_at_surrender":  "68.12",
+                      "base_premium":  "129276.35",
+                      "account_value":  "$130,282.14",
+                      "surrender_value":  "$147,970.98",
+                      "issue_date":  "03/15/2016",
+                      "documents":  [
+
+                                    ],
+                      "verified":  "2026-03-08T09:15:00-05:00",
+                      "notes":  "Rider: IncomeSecure (Active). GMSV: $146,145.27. Surrender value exceeds AV due to guaranteed minimum — normal for this product."
+                  },
+                  {
+                      "app_id":  "24944002",
+                      "policy_number":  "1196053039",
+                      "status":  "active",
+                      "carrier":  "MassMutual Ascend",
+                      "plan":  "American Legend III Q",
+                      "applicant":  "Kilo-Smith, Jeanette",
+                      "agents":  "Frigeri, John L",
+                      "agent_phone":  "",
+                      "surrender_date":  "02/26/2026",
+                      "age_at_surrender":  "64.88",
+                      "base_premium":  "250000",
+                      "account_value":  "$328,133.69",
+                      "surrender_value":  "$328,193.69",
+                      "issue_date":  "02/26/2019",
+                      "documents":  [
+
+                                    ],
+                      "verified":  "2026-03-08T09:18:00-05:00",
+                      "notes":  "GMSV: $300,627.99. Surrender charge period ended — AV closely matches SV."
+                  },
+                  {
+                      "app_id":  "21960137",
+                      "policy_number":  "1195074344",
+                      "status":  "active",
+                      "carrier":  "MassMutual Ascend",
+                      "plan":  "American Valor 10 (Trail AV)",
+                      "applicant":  "Gilmore, Donald R",
+                      "agents":  "Little, Bradley W",
+                      "agent_phone":  "",
+                      "surrender_date":  "03/22/2026",
+                      "age_at_surrender":  "75.22",
+                      "base_premium":  "200000",
+                      "account_value":  "$232,002.34",
+                      "surrender_value":  "$228,477.12",
+                      "issue_date":  "03/22/2016",
+                      "documents":  [
+
+                                    ],
+                      "verified":  "2026-03-08T09:08:00-05:00",
+                      "notes":  "Rider: IncomeSecure (Active). GMSV: $220,649.58. (From POC batch review)"
+                  }
+              ],
+    "summary":  {
+                    "total_account_value":  "$690,418.17",
+                    "active_policies":  3,
+                    "ready_for_contact":  3,
+                    "by_carrier":  {
+                                       "MassMutual Ascend":  {
+                                                                 "reviewed":  2,
+                                                                 "active":  2,
+                                                                 "total_av":  "$690,418.17"
+                                                             },
+                                       "Other Carriers":  {
+                                                              "reviewed":  8,
+                                                              "note":  "Anico, Athene (3x), Global Atlantic, Lincoln, Corebridge (2x) — not yet configured"
+                                                          }
+                                   }
+                },
+    "history":  [
+                    {
+                        "date":  "2026-03-08",
+                        "batch":  "10-task review (2 MassMutual)",
+                        "total":  10,
+                        "active":  2,
+                        "inactive":  0,
+                        "errors":  0,
+                        "processing_time":  "15m 30s"
+                    }
+                ]
 }
