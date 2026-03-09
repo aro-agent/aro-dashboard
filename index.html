@@ -440,10 +440,23 @@
 
     function exportDialerCSV(tasks) {
       const active = tasks.filter(t => t.status === 'active');
-      const headers = ['Policy Number', 'Client Name', 'Agent', 'Phone', 'Carrier', 'Account Value', 'Surrender Date'];
+      const headers = [
+        'Policy Number', 'Client Name', 'Client Phone', 'Client Email',
+        'Agent', 'Agent Phone', 'Carrier', 'Account Value', 'Surrender Value', 'Surrender Date', 'Issue Date', 'Plan'
+      ];
       const rows = active.map(t => [
-        t.policy_number || '', t.applicant || '', t.agents || '', t.agent_phone || '',
-        t.carrier || '', t.account_value || '', t.surrender_date || ''
+        t.policy_number || '',
+        t.applicant || '',
+        t.client_phone || 'N/A',
+        t.client_email || 'N/A',
+        t.agents || '',
+        t.agent_phone || 'N/A',
+        t.carrier || '',
+        t.account_value || '',
+        t.surrender_value || '',
+        t.surrender_date || '',
+        t.issue_date || '',
+        t.plan || ''
       ]);
       const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
