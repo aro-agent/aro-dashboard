@@ -49,7 +49,7 @@
       z-index: 0;
     }
 
-    .container { max-width: 1400px; margin: 0 auto; padding: 24px; position: relative; z-index: 1; }
+    .container { max-width: 1600px; margin: 0 auto; padding: 24px; position: relative; z-index: 1; }
 
     /* Header */
     .header {
@@ -74,20 +74,9 @@
       margin-top: 4px;
       font-family: var(--mono);
     }
-    .header-right {
-      text-align: right;
-    }
-    .last-updated {
-      font-size: 12px;
-      color: var(--slate-dim);
-      font-family: var(--mono);
-    }
-    .batch-id {
-      font-size: 11px;
-      color: var(--slate-dim);
-      font-family: var(--mono);
-      margin-top: 2px;
-    }
+    .header-right { text-align: right; }
+    .last-updated { font-size: 12px; color: var(--slate-dim); font-family: var(--mono); }
+    .batch-id { font-size: 11px; color: var(--slate-dim); font-family: var(--mono); margin-top: 2px; }
     .status-badge {
       display: inline-block;
       padding: 4px 12px;
@@ -117,210 +106,74 @@
       transition: border-color 0.2s;
     }
     .stat-card:hover { border-color: rgba(59, 130, 246, 0.35); }
-    .stat-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--slate-dim);
-      margin-bottom: 8px;
-    }
-    .stat-value {
-      font-size: 32px;
-      font-weight: 700;
-      font-family: var(--mono);
-      line-height: 1;
-    }
+    .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-dim); margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 700; font-family: var(--mono); line-height: 1; }
     .stat-value.green { color: var(--green); }
     .stat-value.red { color: var(--red); }
     .stat-value.yellow { color: var(--yellow); }
     .stat-value.blue { color: var(--blue-glow); }
     .stat-value.cyan { color: var(--cyan); }
-    .stat-sub {
-      font-size: 12px;
-      color: var(--slate-dim);
-      margin-top: 4px;
-      font-family: var(--mono);
-    }
+    .stat-sub { font-size: 12px; color: var(--slate-dim); margin-top: 4px; font-family: var(--mono); }
 
     /* Section Headers */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      margin-top: 8px;
-    }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-    }
-    .section-count {
-      font-size: 12px;
-      color: var(--slate-dim);
-      font-family: var(--mono);
-    }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 8px; }
+    .section-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
 
     /* Tabs */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 20px;
-      background: var(--navy-light);
-      padding: 4px;
-      border-radius: 10px;
-      width: fit-content;
-    }
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--navy-light); padding: 4px; border-radius: 10px; width: fit-content; }
     .tab {
-      padding: 8px 20px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--slate-dim);
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-      background: transparent;
-      font-family: var(--font);
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      color: var(--slate-dim); cursor: pointer; transition: all 0.2s;
+      border: none; background: transparent; font-family: var(--font);
     }
     .tab:hover { color: var(--white); }
-    .tab.active {
-      background: var(--navy-mid);
-      color: var(--white);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .tab .badge {
-      display: inline-block;
-      min-width: 20px;
-      padding: 1px 6px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-family: var(--mono);
-      margin-left: 6px;
-      text-align: center;
-    }
+    .tab.active { background: var(--navy-mid); color: var(--white); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .tab .badge { display: inline-block; min-width: 20px; padding: 1px 6px; border-radius: 10px; font-size: 11px; font-family: var(--mono); margin-left: 6px; text-align: center; }
     .tab .badge.green { background: var(--green-bg); color: var(--green); }
     .tab .badge.red { background: var(--red-bg); color: var(--red); }
     .tab .badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
 
     /* Table */
     .table-container {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      margin-bottom: 32px;
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+      overflow-x: auto; backdrop-filter: blur(8px); margin-bottom: 32px;
     }
-    table { width: 100%; border-collapse: collapse; }
+    table { width: 100%; border-collapse: collapse; min-width: 1400px; }
     th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--slate-dim);
-      background: rgba(15, 26, 46, 0.5);
-      border-bottom: 1px solid var(--card-border);
-      font-weight: 600;
+      text-align: left; padding: 12px 12px; font-size: 10px; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--slate-dim); background: rgba(15, 26, 46, 0.5);
+      border-bottom: 1px solid var(--card-border); font-weight: 600; white-space: nowrap;
     }
-    td {
-      padding: 12px 16px;
-      font-size: 13px;
-      border-bottom: 1px solid rgba(59, 130, 246, 0.08);
-      color: var(--slate);
-    }
+    td { padding: 10px 12px; font-size: 12px; border-bottom: 1px solid rgba(59, 130, 246, 0.08); color: var(--slate); }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(59, 130, 246, 0.04); }
     td.policy-num { font-family: var(--mono); color: var(--white); font-weight: 500; }
     td.value { font-family: var(--mono); color: var(--cyan); text-align: right; }
-    td.name { color: var(--white); font-weight: 500; }
+    td.name { color: var(--white); font-weight: 500; white-space: nowrap; }
     td.carrier { color: var(--slate); }
-    td.agent-name { color: var(--slate-dim); font-size: 12px; }
+    td.agent-name { color: var(--slate-dim); font-size: 11px; white-space: nowrap; }
 
-    .status-pill {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      font-family: var(--mono);
-    }
+    .status-pill { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: var(--mono); }
     .status-pill.active { background: var(--green-bg); color: var(--green); }
     .status-pill.inactive { background: rgba(100, 116, 139, 0.15); color: var(--slate-dim); }
     .status-pill.error { background: var(--red-bg); color: var(--red); }
-
-    .doc-link {
-      color: var(--blue);
-      text-decoration: none;
-      font-size: 12px;
-      font-family: var(--mono);
-    }
+    .doc-link { color: var(--blue); text-decoration: none; font-size: 12px; font-family: var(--mono); }
     .doc-link:hover { text-decoration: underline; }
 
-    /* Carrier Breakdown */
-    .carrier-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-    .carrier-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 16px;
-      backdrop-filter: blur(8px);
-    }
-    .carrier-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 10px;
-    }
-    .carrier-stat {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      padding: 2px 0;
-    }
-    .carrier-stat span:first-child { color: var(--slate-dim); }
-    .carrier-stat span:last-child { font-family: var(--mono); }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--slate-dim);
-    }
+    /* Empty / Loading */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--slate-dim); }
     .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
     .empty-state p { font-size: 14px; }
-
-    /* Loading */
-    .loading {
-      text-align: center;
-      padding: 80px 20px;
-      color: var(--slate-dim);
-      font-family: var(--mono);
-      font-size: 13px;
-    }
+    .loading { text-align: center; padding: 80px 20px; color: var(--slate-dim); font-family: var(--mono); font-size: 13px; }
     .loading::after {
-      content: '';
-      display: block;
-      width: 32px;
-      height: 32px;
-      margin: 16px auto 0;
-      border: 2px solid var(--card-border);
-      border-top-color: var(--blue);
-      border-radius: 50%;
+      content: ''; display: block; width: 32px; height: 32px; margin: 16px auto 0;
+      border: 2px solid var(--card-border); border-top-color: var(--blue); border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Responsive */
-    @media (max-width: 1200px) {
-      .stats-grid { grid-template-columns: repeat(3, 1fr); }
-    }
+    @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 768px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .header { flex-direction: column; gap: 12px; }
@@ -328,54 +181,68 @@
       .container { padding: 16px; }
     }
 
-    /* Panel for dialer export */
-    .action-bar {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
+    /* Action bar */
+    .action-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
     .action-btn {
-      padding: 8px 20px;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
-      background: var(--navy-light);
-      color: var(--slate);
-      font-family: var(--font);
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 8px 20px; border-radius: 8px; border: 1px solid var(--card-border);
+      background: var(--navy-light); color: var(--slate); font-family: var(--font);
+      font-size: 13px; cursor: pointer; transition: all 0.2s;
     }
-    .action-btn:hover {
-      border-color: var(--blue);
-      color: var(--white);
-      background: var(--navy-mid);
-    }
-    .action-btn.primary {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.4);
-      color: var(--blue-glow);
-    }
-    .action-btn.primary:hover {
-      background: rgba(59, 130, 246, 0.25);
-    }
+    .action-btn:hover { border-color: var(--blue); color: var(--white); background: var(--navy-mid); }
+    .action-btn.primary { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-glow); }
+    .action-btn.primary:hover { background: rgba(59, 130, 246, 0.25); }
 
-    /* History mini chart */
-    .history-bar {
-      display: flex;
-      gap: 3px;
-      align-items: flex-end;
-      height: 40px;
-      margin-top: 12px;
+    /* Row action buttons */
+    .row-actions { display: flex; gap: 4px; flex-wrap: nowrap; }
+    .row-btn {
+      padding: 4px 8px; border-radius: 6px; border: 1px solid var(--card-border);
+      background: var(--navy-light); color: var(--slate); font-size: 13px;
+      cursor: pointer; transition: all 0.15s; line-height: 1;
     }
-    .history-bar .bar {
-      flex: 1;
-      border-radius: 2px 2px 0 0;
-      min-width: 8px;
-      max-width: 24px;
-      transition: height 0.3s;
+    .row-btn:hover { border-color: var(--blue); color: var(--white); background: var(--navy-mid); }
+    .row-btn.schedule:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59,130,246,0.4); }
+    .row-btn.deal:hover { background: var(--green-bg); border-color: rgba(52,211,153,0.4); }
+    .row-btn.close:hover { background: var(--yellow-bg); border-color: rgba(251,191,36,0.4); }
+    .row-btn.email:hover { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.4); }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;
     }
-    .history-bar .bar.green { background: var(--green); opacity: 0.7; }
-    .history-bar .bar.red { background: var(--red); opacity: 0.7; }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--navy-light); border: 1px solid var(--card-border); border-radius: 16px;
+      padding: 28px; width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+    }
+    .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--white); }
+    .modal-field { margin-bottom: 14px; }
+    .modal-field label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-dim); margin-bottom: 6px; }
+    .modal-field input, .modal-field select, .modal-field textarea {
+      width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--card-border);
+      background: var(--navy); color: var(--white); font-family: var(--font); font-size: 13px;
+    }
+    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { outline: none; border-color: var(--blue); }
+    .modal-field textarea { min-height: 100px; resize: vertical; }
+    .modal-field .readonly { background: rgba(15, 26, 46, 0.4); color: var(--slate); cursor: default; }
+    .modal-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+    .modal-actions button {
+      padding: 10px 24px; border-radius: 8px; border: 1px solid var(--card-border);
+      cursor: pointer; font-family: var(--font); font-size: 13px; font-weight: 500;
+    }
+    .modal-actions .cancel { background: transparent; color: var(--slate); }
+    .modal-actions .confirm { background: rgba(59, 130, 246, 0.2); border-color: rgba(59,130,246,0.5); color: var(--blue-glow); }
+    .modal-actions .confirm:hover { background: rgba(59, 130, 246, 0.35); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: 10px;
+      font-size: 13px; font-weight: 500; z-index: 2000;
+      transform: translateY(100px); opacity: 0; transition: all 0.3s;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+    .toast.info { background: rgba(59,130,246,0.15); color: var(--blue-glow); border: 1px solid rgba(59,130,246,0.3); }
   </style>
 </head>
 <body>
@@ -383,29 +250,126 @@
     <div class="loading">Loading dashboard data...</div>
   </div>
 
+  <!-- Schedule Follow-Up Modal -->
+  <div class="modal-overlay" id="schedule-modal">
+    <div class="modal">
+      <h3>📅 Schedule Follow-Up Call</h3>
+      <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">Renames the task to append "Call #2" (or increments existing call number) and reschedules 2 weeks out.</p>
+      <div class="modal-field">
+        <label>Task / Client</label>
+        <input type="text" id="sched-client" class="readonly" readonly>
+      </div>
+      <div class="modal-field">
+        <label>New Due Date (default: +2 weeks)</label>
+        <input type="date" id="sched-date">
+      </div>
+      <div class="modal-actions">
+        <button class="cancel" onclick="closeModal('schedule-modal')">Cancel</button>
+        <button class="confirm" onclick="confirmSchedule()">Reschedule Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Deal Modal -->
+  <div class="modal-overlay" id="deal-modal">
+    <div class="modal">
+      <h3>💼 Create HubSpot Deal</h3>
+      <div class="modal-field">
+        <label>Deal Name</label>
+        <input type="text" id="deal-name" class="readonly" readonly placeholder="ARO Agent Name - Client Name">
+      </div>
+      <div class="modal-field">
+        <label>Deal Stage</label>
+        <input type="text" id="deal-stage" class="readonly" readonly value="50/50">
+      </div>
+      <div class="modal-field">
+        <label>Deal Owner</label>
+        <input type="text" id="deal-owner" class="readonly" readonly value="Tiffany Buchanan">
+      </div>
+      <div class="modal-field">
+        <label>Product Sub-Category</label>
+        <input type="text" id="deal-product" class="readonly" readonly value="Annuity">
+      </div>
+      <div class="modal-field">
+        <label>Premium Amount ($)</label>
+        <input type="number" id="deal-amount" step="0.01" placeholder="Enter premium amount">
+      </div>
+      <div class="modal-field">
+        <label>Associated Contact (Agent)</label>
+        <input type="text" id="deal-agent" class="readonly" readonly>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel" onclick="closeModal('deal-modal')">Cancel</button>
+        <button class="confirm" onclick="confirmDeal()">Create Deal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Close Task Modal -->
+  <div class="modal-overlay" id="close-modal">
+    <div class="modal">
+      <h3>✅ Close Out HubSpot Task</h3>
+      <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">Marks the HubSpot task as completed and removes it from the active queue.</p>
+      <div class="modal-field">
+        <label>Task / Client</label>
+        <input type="text" id="close-client" class="readonly" readonly>
+      </div>
+      <div class="modal-field">
+        <label>Close Notes (optional)</label>
+        <textarea id="close-notes" placeholder="Outcome of the call, any relevant notes..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel" onclick="closeModal('close-modal')">Cancel</button>
+        <button class="confirm" onclick="confirmClose()">Close Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Draft Modal -->
+  <div class="modal-overlay" id="email-modal">
+    <div class="modal">
+      <h3>✉️ Draft Email Response</h3>
+      <div class="modal-field">
+        <label>To (Agent)</label>
+        <input type="text" id="email-to" class="readonly" readonly>
+      </div>
+      <div class="modal-field">
+        <label>Subject</label>
+        <input type="text" id="email-subject" placeholder="RE: ARO Update">
+      </div>
+      <div class="modal-field">
+        <label>Message</label>
+        <textarea id="email-body" placeholder="Type your response here..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel" onclick="closeModal('email-modal')">Cancel</button>
+        <button class="confirm" onclick="confirmEmail()">Queue Draft</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
     const DATA_URL = './data/results.json';
+    let _currentTask = null;
 
     async function loadData() {
       try {
         const resp = await fetch(DATA_URL + '?t=' + Date.now());
         if (!resp.ok) throw new Error('No data file found');
         return await resp.json();
-      } catch (e) {
-        return null;
-      }
+      } catch (e) { return null; }
     }
 
     function timeSince(dateStr) {
-      const now = new Date();
-      const then = new Date(dateStr);
+      const now = new Date(), then = new Date(dateStr);
       const mins = Math.floor((now - then) / 60000);
       if (mins < 1) return 'just now';
       if (mins < 60) return mins + 'm ago';
       const hrs = Math.floor(mins / 60);
       if (hrs < 24) return hrs + 'h ago';
-      const days = Math.floor(hrs / 24);
-      return days + 'd ago';
+      return Math.floor(hrs / 24) + 'd ago';
     }
 
     function dataStatus(dateStr) {
@@ -417,73 +381,143 @@
 
     function formatCurrency(val) {
       if (!val || val === 'N/A') return 'N/A';
-      const str = String(val).replace(/[^0-9.\-]/g, '');
-      const num = parseFloat(str);
+      const num = parseFloat(String(val).replace(/[^0-9.\-]/g, ''));
       if (isNaN(num)) return val;
       return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function getCarrierBreakdown(tasks) {
-      const carriers = {};
-      tasks.forEach(t => {
-        const c = t.carrier || 'Unknown';
-        if (!carriers[c]) carriers[c] = { active: 0, inactive: 0, error: 0, total: 0, premium: 0 };
-        carriers[c].total++;
-        carriers[c][t.status || 'error']++;
-        if (t.status === 'active' && t.account_value) {
-          const v = parseFloat(String(t.account_value).replace(/[^0-9.\-]/g, ''));
-          if (!isNaN(v)) carriers[c].premium += v;
-        }
-      });
-      return carriers;
     }
 
     function exportDialerCSV(tasks) {
       const active = tasks.filter(t => t.status === 'active');
       const headers = [
-        'Policy Number', 'Client Name', 'Client Phone', 'Client Email',
-        'Agent', 'Agent Phone', 'Carrier', 'Account Value', 'Surrender Value', 'Surrender Date', 'Issue Date', 'Plan'
+        'Policy Number','Client Name','Client Age','Client Phone','Client Email',
+        'Agent','Agent Phone','Agent Email','Broker Dealer',
+        'Carrier','Product Name','Plan Type','Account Value','Surrender Value',
+        'Surrender Date','Age at Surrender','Issue Date','State','Statement','Documents'
       ];
       const rows = active.map(t => [
-        t.policy_number || '',
-        t.applicant || '',
-        t.client_phone || 'N/A',
-        t.client_email || 'N/A',
-        t.agents || '',
-        t.agent_phone || 'N/A',
-        t.carrier || '',
-        t.account_value || '',
-        t.surrender_value || '',
-        t.surrender_date || '',
-        t.issue_date || '',
-        t.plan || ''
+        t.policy_number||'', t.applicant||'', t.client_age||'',
+        t.client_phone||'N/A', t.client_email||'N/A',
+        t.agents||'', t.agent_phone||'N/A', t.agent_email||'N/A', t.broker_dealer||'',
+        t.carrier||'', t.product_name||'', t.plan_type||t.plan||'',
+        t.account_value||'', t.surrender_value||'',
+        t.surrender_date||'', t.age_at_surrender||'', t.issue_date||'',
+        t.state||'', t.statement||'', (t.documents||[]).join('; ')
       ]);
-      const csv = [headers, ...rows].map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv' });
+      const csv = [headers,...rows].map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'aro_dialer_export_' + new Date().toISOString().slice(0, 10) + '.csv';
+      a.download = 'aro_dialer_export_' + new Date().toISOString().slice(0,10) + '.csv';
       a.click();
       URL.revokeObjectURL(url);
     }
 
+    // --- Modal helpers ---
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); _currentTask = null; }
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + type + ' show';
+      setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // --- Row action handlers ---
+    function openSchedule(idx) {
+      _currentTask = window.__tasks[idx];
+      document.getElementById('sched-client').value = _currentTask.applicant || _currentTask.app_id;
+      const d = new Date(); d.setDate(d.getDate() + 14);
+      document.getElementById('sched-date').value = d.toISOString().slice(0, 10);
+      openModal('schedule-modal');
+    }
+    function confirmSchedule() {
+      if (!_currentTask) return;
+      queueAction({
+        type: 'schedule_followup', task_id: _currentTask.app_id,
+        client: _currentTask.applicant, new_due_date: document.getElementById('sched-date').value,
+        rename_suffix: 'Call #2', timestamp: new Date().toISOString()
+      });
+      closeModal('schedule-modal');
+      showToast('Follow-up scheduled — agent will update HubSpot');
+    }
+
+    function openDeal(idx) {
+      _currentTask = window.__tasks[idx];
+      document.getElementById('deal-name').value = 'ARO ' + (_currentTask.agents||'Agent') + ' - ' + (_currentTask.applicant||'Client');
+      document.getElementById('deal-agent').value = _currentTask.agents || 'N/A';
+      document.getElementById('deal-amount').value = _currentTask.base_premium ? String(_currentTask.base_premium).replace(/[^0-9.]/g,'') : '';
+      openModal('deal-modal');
+    }
+    function confirmDeal() {
+      if (!_currentTask) return;
+      queueAction({
+        type: 'create_deal', task_id: _currentTask.app_id,
+        deal_name: document.getElementById('deal-name').value,
+        deal_stage: '50/50', deal_owner: 'Tiffany Buchanan',
+        product_sub_category: 'Annuity', amount: document.getElementById('deal-amount').value,
+        associated_contact: document.getElementById('deal-agent').value,
+        timestamp: new Date().toISOString()
+      });
+      closeModal('deal-modal');
+      showToast('Deal creation queued for HubSpot');
+    }
+
+    function openClose(idx) {
+      _currentTask = window.__tasks[idx];
+      document.getElementById('close-client').value = _currentTask.applicant || _currentTask.app_id;
+      document.getElementById('close-notes').value = '';
+      openModal('close-modal');
+    }
+    function confirmClose() {
+      if (!_currentTask) return;
+      queueAction({
+        type: 'close_task', task_id: _currentTask.app_id,
+        client: _currentTask.applicant, notes: document.getElementById('close-notes').value,
+        timestamp: new Date().toISOString()
+      });
+      closeModal('close-modal');
+      showToast('Task close-out queued for HubSpot');
+    }
+
+    function openEmail(idx) {
+      _currentTask = window.__tasks[idx];
+      document.getElementById('email-to').value = _currentTask.agent_email || _currentTask.agents || 'N/A';
+      document.getElementById('email-subject').value = 'RE: ARO Update - ' + (_currentTask.applicant||'');
+      document.getElementById('email-body').value = '';
+      openModal('email-modal');
+    }
+    function confirmEmail() {
+      if (!_currentTask) return;
+      queueAction({
+        type: 'draft_email', task_id: _currentTask.app_id,
+        to: document.getElementById('email-to').value,
+        subject: document.getElementById('email-subject').value,
+        body: document.getElementById('email-body').value,
+        timestamp: new Date().toISOString()
+      });
+      closeModal('email-modal');
+      showToast('Email draft queued', 'info');
+    }
+
+    function queueAction(action) {
+      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
+      pending.push(action);
+      localStorage.setItem('aro_pending_actions', JSON.stringify(pending));
+      // Also write to pending_actions.json for agent pickup
+      fetch('./data/pending_actions.json', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(pending)
+      }).catch(() => {});
+    }
+
     function render(data) {
       const app = document.getElementById('app');
-
       if (!data || !data.batch) {
         app.innerHTML = `
-          <div class="header">
-            <div class="header-left">
-              <h1>ARO Dashboard</h1>
-              <div class="subtitle">BSMG Annuity Renewal Operations</div>
-            </div>
-          </div>
-          <div class="empty-state">
-            <div class="icon">📋</div>
-            <p>No batch data available yet.</p>
-            <p style="margin-top:8px;font-size:12px;font-family:var(--mono);">The agent will populate this dashboard after its first run.</p>
-          </div>`;
+          <div class="header"><div class="header-left"><h1>ARO Dashboard</h1><div class="subtitle">BSMG Annuity Renewal Operations</div></div></div>
+          <div class="empty-state"><div class="icon">📋</div><p>No batch data available yet.</p>
+          <p style="margin-top:8px;font-size:12px;font-family:var(--mono);">The agent will populate this dashboard after its first run.</p></div>`;
         return;
       }
 
@@ -493,7 +527,6 @@
       const active = tasks.filter(t => t.status === 'active');
       const inactive = tasks.filter(t => t.status === 'inactive');
       const errors = tasks.filter(t => t.status === 'error');
-      const carriers = getCarrierBreakdown(tasks);
       const ds = dataStatus(b.timestamp);
       const successRate = b.total > 0 ? Math.round(((b.total - (b.errors || errors.length)) / b.total) * 100) : 0;
 
@@ -505,10 +538,7 @@
 
       app.innerHTML = `
         <div class="header">
-          <div class="header-left">
-            <h1>ARO Dashboard</h1>
-            <div class="subtitle">BSMG Annuity Renewal Operations</div>
-          </div>
+          <div class="header-left"><h1>ARO Dashboard</h1><div class="subtitle">BSMG Annuity Renewal Operations</div></div>
           <div class="header-right">
             <div class="last-updated">Updated ${timeSince(b.timestamp)}</div>
             <div class="batch-id">${b.timestamp || ''}</div>
@@ -517,54 +547,13 @@
         </div>
 
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total Tasks</div>
-            <div class="stat-value blue">${b.total || tasks.length}</div>
-            <div class="stat-sub">${Object.keys(carriers).length} carrier${Object.keys(carriers).length !== 1 ? 's' : ''}</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Active</div>
-            <div class="stat-value green">${active.length}</div>
-            <div class="stat-sub">ready for contact</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Inactive</div>
-            <div class="stat-value" style="color:var(--slate-dim)">${inactive.length}</div>
-            <div class="stat-sub">removed from queue</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Errors</div>
-            <div class="stat-value ${errors.length > 0 ? 'red' : ''}">${errors.length}</div>
-            <div class="stat-sub">${errors.length > 0 ? 'needs review' : 'none'}</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Success Rate</div>
-            <div class="stat-value ${successRate >= 90 ? 'green' : successRate >= 80 ? 'yellow' : 'red'}">${successRate}%</div>
-            <div class="stat-sub">target: 90%+</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Active Value</div>
-            <div class="stat-value cyan">${totalValue > 0 ? '$' + (totalValue / 1000).toFixed(0) + 'k' : 'N/A'}</div>
-            <div class="stat-sub">${totalValue > 0 ? formatCurrency(totalValue) : 'pending extraction'}</div>
-          </div>
+          <div class="stat-card"><div class="stat-label">Total Tasks</div><div class="stat-value blue">${b.total || tasks.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value green">${active.length}</div><div class="stat-sub">ready for contact</div></div>
+          <div class="stat-card"><div class="stat-label">Inactive</div><div class="stat-value" style="color:var(--slate-dim)">${inactive.length}</div><div class="stat-sub">removed from queue</div></div>
+          <div class="stat-card"><div class="stat-label">Errors</div><div class="stat-value ${errors.length > 0 ? 'red' : ''}">${errors.length}</div><div class="stat-sub">${errors.length > 0 ? 'needs review' : 'none'}</div></div>
+          <div class="stat-card"><div class="stat-label">Success Rate</div><div class="stat-value ${successRate >= 90 ? 'green' : successRate >= 80 ? 'yellow' : 'red'}">${successRate}%</div><div class="stat-sub">target: 90%+</div></div>
+          <div class="stat-card"><div class="stat-label">Active Value</div><div class="stat-value cyan">${totalValue > 0 ? '$' + (totalValue / 1000).toFixed(0) + 'k' : 'N/A'}</div><div class="stat-sub">${totalValue > 0 ? formatCurrency(totalValue) : 'pending extraction'}</div></div>
         </div>
-
-        ${Object.keys(carriers).length > 1 ? `
-        <div class="section-header">
-          <div class="section-title">Carrier Breakdown</div>
-        </div>
-        <div class="carrier-grid">
-          ${Object.entries(carriers).map(([name, c]) => `
-            <div class="carrier-card">
-              <div class="carrier-name">${name}</div>
-              <div class="carrier-stat"><span>Total</span><span>${c.total}</span></div>
-              <div class="carrier-stat"><span>Active</span><span style="color:var(--green)">${c.active}</span></div>
-              <div class="carrier-stat"><span>Inactive</span><span>${c.inactive}</span></div>
-              ${c.error > 0 ? `<div class="carrier-stat"><span>Errors</span><span style="color:var(--red)">${c.error}</span></div>` : ''}
-              ${c.premium > 0 ? `<div class="carrier-stat"><span>Value</span><span style="color:var(--cyan)">${formatCurrency(c.premium)}</span></div>` : ''}
-            </div>
-          `).join('')}
-        </div>` : ''}
 
         <div class="tabs" id="tabs">
           <button class="tab active" data-tab="active">Active <span class="badge green">${active.length}</span></button>
@@ -583,13 +572,23 @@
               <tr>
                 <th>Status</th>
                 <th>Client</th>
+                <th>Age</th>
+                <th>State</th>
                 <th>Policy #</th>
                 <th>Carrier</th>
-                <th>Account Value</th>
-                <th>Surrender Value</th>
-                <th>Surrender Date</th>
+                <th>Product</th>
+                <th>Plan Type</th>
+                <th>Acct Value</th>
+                <th>Surr Value</th>
+                <th>Surr Date</th>
+                <th>Age@Surr</th>
                 <th>Agent</th>
+                <th>Agent Ph</th>
+                <th>Agent Email</th>
+                <th>Broker Dealer</th>
+                <th>Statement</th>
                 <th>Docs</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="task-table"></tbody>
@@ -597,9 +596,7 @@
         </div>
 
         ${b.processing_time || b.ai_calls !== undefined ? `
-        <div class="section-header">
-          <div class="section-title">Batch Metrics</div>
-        </div>
+        <div class="section-header"><div class="section-title">Batch Metrics</div></div>
         <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
           ${b.processing_time ? `<div class="stat-card"><div class="stat-label">Processing Time</div><div class="stat-value blue" style="font-size:24px">${b.processing_time}</div></div>` : ''}
           ${b.ai_calls !== undefined ? `<div class="stat-card"><div class="stat-label">AI Calls</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.ai_calls}</div></div>` : ''}
@@ -608,23 +605,21 @@
         </div>` : ''}
 
         ${history.length > 1 ? `
-        <div class="section-header">
-          <div class="section-title">Batch History (Last ${history.length} runs)</div>
-        </div>
+        <div class="section-header"><div class="section-title">Batch History (Last ${history.length} runs)</div></div>
         <div class="table-container">
-          <table>
+          <table style="min-width:600px">
             <thead><tr><th>Date</th><th>Total</th><th>Active</th><th>Inactive</th><th>Errors</th><th>Success Rate</th><th>Time</th></tr></thead>
             <tbody>
               ${history.map(h => {
                 const sr = h.total > 0 ? Math.round(((h.total - h.errors) / h.total) * 100) : 0;
                 return `<tr>
-                  <td style="font-family:var(--mono);color:var(--white)">${h.date || ''}</td>
+                  <td style="font-family:var(--mono);color:var(--white)">${h.date||''}</td>
                   <td style="font-family:var(--mono)">${h.total}</td>
                   <td style="font-family:var(--mono);color:var(--green)">${h.active}</td>
                   <td style="font-family:var(--mono)">${h.inactive}</td>
-                  <td style="font-family:var(--mono);${h.errors > 0 ? 'color:var(--red)' : ''}">${h.errors}</td>
-                  <td style="font-family:var(--mono);${sr >= 90 ? 'color:var(--green)' : sr >= 80 ? 'color:var(--yellow)' : 'color:var(--red)'}">${sr}%</td>
-                  <td style="font-family:var(--mono);color:var(--slate-dim)">${h.processing_time || ''}</td>
+                  <td style="font-family:var(--mono);${h.errors>0?'color:var(--red)':''}">${h.errors}</td>
+                  <td style="font-family:var(--mono);${sr>=90?'color:var(--green)':sr>=80?'color:var(--yellow)':'color:var(--red)'}">${sr}%</td>
+                  <td style="font-family:var(--mono);color:var(--slate-dim)">${h.processing_time||''}</td>
                 </tr>`;
               }).join('')}
             </tbody>
@@ -632,13 +627,9 @@
         </div>` : ''}
       `;
 
-      // Store for export
       window.__tasks = tasks;
-
-      // Render initial table
       renderTable(active);
 
-      // Tab switching
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
           document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -656,28 +647,45 @@
     function renderTable(rows) {
       const tbody = document.getElementById('task-table');
       if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--slate-dim)">No tasks in this view</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="19" style="text-align:center;padding:32px;color:var(--slate-dim)">No tasks in this view</td></tr>';
         return;
       }
-      tbody.innerHTML = rows.map(t => `
-        <tr>
-          <td><span class="status-pill ${t.status}">${t.status === 'active' ? '✓ Active' : t.status === 'inactive' ? '✗ Inactive' : '⚠ Error'}</span></td>
-          <td class="name">${t.applicant || 'N/A'}</td>
-          <td class="policy-num">${t.policy_number || t.app_id || 'N/A'}</td>
-          <td class="carrier">${t.carrier || 'N/A'}</td>
-          <td class="value">${t.status === 'active' ? formatCurrency(t.account_value) : ''}</td>
-          <td class="value">${t.status === 'active' ? formatCurrency(t.surrender_value) : ''}</td>
-          <td style="font-family:var(--mono);font-size:12px">${t.surrender_date || ''}</td>
-          <td class="agent-name">${t.agents || 'N/A'}</td>
-          <td>${(t.documents || []).map(d => '<a class="doc-link" href="docs/' + d + '" target="_blank">📄</a>').join(' ') || ''}</td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = rows.map(t => {
+        const idx = window.__tasks.indexOf(t);
+        return `<tr>
+          <td><span class="status-pill ${t.status}">${t.status==='active'?'✓ Active':t.status==='inactive'?'✗ Inactive':'⚠ Error'}</span></td>
+          <td class="name">${t.applicant||'N/A'}</td>
+          <td style="font-family:var(--mono);font-size:11px">${t.client_age||''}</td>
+          <td style="font-size:11px">${t.state||''}</td>
+          <td class="policy-num">${t.policy_number||t.app_id||'N/A'}</td>
+          <td class="carrier">${t.carrier||'N/A'}</td>
+          <td style="font-size:11px">${t.product_name||''}</td>
+          <td style="font-size:11px">${t.plan_type||t.plan||''}</td>
+          <td class="value">${t.status==='active'?formatCurrency(t.account_value):''}</td>
+          <td class="value">${t.status==='active'?formatCurrency(t.surrender_value):''}</td>
+          <td style="font-family:var(--mono);font-size:11px">${t.surrender_date||''}</td>
+          <td style="font-family:var(--mono);font-size:11px">${t.age_at_surrender||''}</td>
+          <td class="agent-name">${t.agents||'N/A'}</td>
+          <td style="font-family:var(--mono);font-size:11px">${t.agent_phone||''}</td>
+          <td style="font-size:11px">${t.agent_email||''}</td>
+          <td style="font-size:11px">${t.broker_dealer||''}</td>
+          <td style="font-size:11px">${t.statement||''}</td>
+          <td>${(t.documents||[]).map(d=>'<a class="doc-link" href="docs/'+d+'" target="_blank">📄</a>').join(' ')||''}</td>
+          <td>
+            <div class="row-actions">
+              ${t.status==='active'?`
+                <button class="row-btn schedule" onclick="openSchedule(${idx})" title="Schedule follow-up (+2 weeks)">📅</button>
+                <button class="row-btn deal" onclick="openDeal(${idx})" title="Create HubSpot deal">💼</button>
+                <button class="row-btn close" onclick="openClose(${idx})" title="Close out task on HubSpot">✅</button>
+                <button class="row-btn email" onclick="openEmail(${idx})" title="Draft email response">✉️</button>
+              `:''}
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
     }
 
-    // Init
     loadData().then(render);
-
-    // Auto-refresh every 5 minutes
     setInterval(() => loadData().then(render), 300000);
   </script>
 </body>
