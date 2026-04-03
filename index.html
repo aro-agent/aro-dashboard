@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARO Dashboard — BSMG</title>
+  <title>ARO Command Center — BSMG</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,6 +21,8 @@
       --red-bg: rgba(248, 113, 113, 0.1);
       --yellow: #fbbf24;
       --yellow-bg: rgba(251, 191, 36, 0.1);
+      --orange: #fb923c;
+      --orange-bg: rgba(251, 146, 60, 0.1);
       --slate: #94a3b8;
       --slate-dim: #64748b;
       --white: #f1f5f9;
@@ -42,7 +44,7 @@
       content: '';
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: 
+      background:
         radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
         radial-gradient(ellipse at 80% 100%, rgba(34, 211, 238, 0.05) 0%, transparent 60%);
       pointer-events: none;
@@ -53,57 +55,51 @@
 
     /* Header */
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--card-border);
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--card-border);
     }
     .header-left h1 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--white) 0%, var(--blue-glow) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .header-left .subtitle {
-      font-size: 13px;
-      color: var(--slate-dim);
-      margin-top: 4px;
-      font-family: var(--mono);
-    }
-    .header-right { text-align: right; }
+    .header-left .subtitle { font-size: 13px; color: var(--slate-dim); margin-top: 4px; font-family: var(--mono); }
+    .header-right { display: flex; align-items: center; gap: 16px; }
+    .header-meta { text-align: right; }
     .last-updated { font-size: 12px; color: var(--slate-dim); font-family: var(--mono); }
-    .batch-id { font-size: 11px; color: var(--slate-dim); font-family: var(--mono); margin-top: 2px; }
     .status-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: var(--mono);
-      margin-top: 8px;
+      display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px;
+      font-weight: 600; font-family: var(--mono); margin-top: 6px;
     }
     .status-badge.live { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
     .status-badge.stale { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(251, 191, 36, 0.3); }
     .status-badge.error { background: var(--red-bg); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
 
+    /* Workflow buttons in header */
+    .workflow-btns { display: flex; gap: 8px; }
+    .wf-btn {
+      padding: 10px 18px; border-radius: 10px; border: 1px solid var(--card-border);
+      background: var(--navy-light); color: var(--slate); font-family: var(--font);
+      font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .wf-btn:hover { border-color: var(--blue); color: var(--white); background: var(--navy-mid); }
+    .wf-btn.primary { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-glow); }
+    .wf-btn.primary:hover { background: rgba(59, 130, 246, 0.3); }
+    .wf-btn.green { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.3); color: var(--green); }
+    .wf-btn.green:hover { background: rgba(52, 211, 153, 0.2); }
+    .wf-btn .badge-count {
+      background: var(--red); color: #fff; font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 10px; font-family: var(--mono);
+    }
+
     /* Stats Grid */
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px;
     }
     .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 20px;
-      backdrop-filter: blur(8px);
-      transition: border-color 0.2s;
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+      padding: 20px; backdrop-filter: blur(8px); transition: border-color 0.2s;
     }
     .stat-card:hover { border-color: rgba(59, 130, 246, 0.35); }
     .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-dim); margin-bottom: 8px; }
@@ -115,12 +111,8 @@
     .stat-value.cyan { color: var(--cyan); }
     .stat-sub { font-size: 12px; color: var(--slate-dim); margin-top: 4px; font-family: var(--mono); }
 
-    /* Section Headers */
-    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; margin-top: 8px; }
-    .section-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-
     /* Tabs */
-    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: var(--navy-light); padding: 4px; border-radius: 10px; width: fit-content; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; background: var(--navy-light); padding: 4px; border-radius: 10px; width: fit-content; }
     .tab {
       padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
       color: var(--slate-dim); cursor: pointer; transition: all 0.2s;
@@ -133,12 +125,23 @@
     .tab .badge.red { background: var(--red-bg); color: var(--red); }
     .tab .badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
 
+    /* Action bar */
+    .action-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .action-btn {
+      padding: 8px 20px; border-radius: 8px; border: 1px solid var(--card-border);
+      background: var(--navy-light); color: var(--slate); font-family: var(--font);
+      font-size: 13px; cursor: pointer; transition: all 0.2s;
+    }
+    .action-btn:hover { border-color: var(--blue); color: var(--white); background: var(--navy-mid); }
+    .action-btn.primary { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-glow); }
+    .action-btn.primary:hover { background: rgba(59, 130, 246, 0.25); }
+
     /* Table */
     .table-container {
       background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
-      overflow-x: auto; backdrop-filter: blur(8px); margin-bottom: 32px;
+      overflow-x: auto; backdrop-filter: blur(8px); margin-bottom: 28px;
     }
-    table { width: 100%; border-collapse: collapse; min-width: 1400px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1200px; }
     th {
       text-align: left; padding: 12px 12px; font-size: 10px; text-transform: uppercase;
       letter-spacing: 0.8px; color: var(--slate-dim); background: rgba(15, 26, 46, 0.5);
@@ -151,46 +154,11 @@
     td.value { font-family: var(--mono); color: var(--cyan); text-align: right; }
     td.name { color: var(--white); font-weight: 500; white-space: nowrap; }
     td.carrier { color: var(--slate); }
-    td.agent-name { color: var(--slate-dim); font-size: 11px; white-space: nowrap; }
 
     .status-pill { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; font-family: var(--mono); }
     .status-pill.active { background: var(--green-bg); color: var(--green); }
     .status-pill.inactive { background: rgba(100, 116, 139, 0.15); color: var(--slate-dim); }
     .status-pill.error { background: var(--red-bg); color: var(--red); }
-    .doc-link { color: var(--blue); text-decoration: none; font-size: 12px; font-family: var(--mono); }
-    .doc-link:hover { text-decoration: underline; }
-
-    /* Empty / Loading */
-    .empty-state { text-align: center; padding: 60px 20px; color: var(--slate-dim); }
-    .empty-state .icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
-    .empty-state p { font-size: 14px; }
-    .loading { text-align: center; padding: 80px 20px; color: var(--slate-dim); font-family: var(--mono); font-size: 13px; }
-    .loading::after {
-      content: ''; display: block; width: 32px; height: 32px; margin: 16px auto 0;
-      border: 2px solid var(--card-border); border-top-color: var(--blue); border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Responsive */
-    @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 768px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .header { flex-direction: column; gap: 12px; }
-      .header-right { text-align: left; }
-      .container { padding: 16px; }
-    }
-
-    /* Action bar */
-    .action-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-    .action-btn {
-      padding: 8px 20px; border-radius: 8px; border: 1px solid var(--card-border);
-      background: var(--navy-light); color: var(--slate); font-family: var(--font);
-      font-size: 13px; cursor: pointer; transition: all 0.2s;
-    }
-    .action-btn:hover { border-color: var(--blue); color: var(--white); background: var(--navy-mid); }
-    .action-btn.primary { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-glow); }
-    .action-btn.primary:hover { background: rgba(59, 130, 246, 0.25); }
 
     /* Row action buttons */
     .row-actions { display: flex; gap: 4px; flex-wrap: nowrap; }
@@ -205,6 +173,27 @@
     .row-btn.close:hover { background: var(--yellow-bg); border-color: rgba(251,191,36,0.4); }
     .row-btn.email:hover { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.4); }
 
+    /* Error detail row */
+    .error-detail {
+      background: rgba(248, 113, 113, 0.04); border-left: 3px solid var(--red);
+      padding: 12px 16px; margin: 4px 0; border-radius: 0 8px 8px 0;
+    }
+    .error-detail .error-reason { color: var(--red); font-weight: 600; font-size: 12px; margin-bottom: 4px; }
+    .error-detail .error-meta { color: var(--slate-dim); font-size: 11px; font-family: var(--mono); }
+    .error-detail .error-action {
+      margin-top: 8px; display: flex; gap: 8px;
+    }
+    .error-detail .error-action button {
+      padding: 4px 12px; border-radius: 6px; border: 1px solid var(--card-border);
+      background: var(--navy-light); color: var(--slate); font-size: 11px;
+      cursor: pointer; font-family: var(--font); transition: all 0.15s;
+    }
+    .error-detail .error-action button:hover { border-color: var(--blue); color: var(--white); }
+
+    /* Section Headers */
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; margin-top: 4px; }
+    .section-title { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+
     /* Modal */
     .modal-overlay {
       display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -213,8 +202,9 @@
     .modal-overlay.active { display: flex; }
     .modal {
       background: var(--navy-light); border: 1px solid var(--card-border); border-radius: 16px;
-      padding: 28px; width: 480px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+      padding: 28px; width: 600px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
     }
+    .modal.wide { width: 720px; }
     .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--white); }
     .modal-field { margin-bottom: 14px; }
     .modal-field label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-dim); margin-bottom: 6px; }
@@ -223,7 +213,7 @@
       background: var(--navy); color: var(--white); font-family: var(--font); font-size: 13px;
     }
     .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { outline: none; border-color: var(--blue); }
-    .modal-field textarea { min-height: 100px; resize: vertical; }
+    .modal-field textarea { min-height: 180px; resize: vertical; line-height: 1.6; }
     .modal-field .readonly { background: rgba(15, 26, 46, 0.4); color: var(--slate); cursor: default; }
     .modal-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
     .modal-actions button {
@@ -233,16 +223,104 @@
     .modal-actions .cancel { background: transparent; color: var(--slate); }
     .modal-actions .confirm { background: rgba(59, 130, 246, 0.2); border-color: rgba(59,130,246,0.5); color: var(--blue-glow); }
     .modal-actions .confirm:hover { background: rgba(59, 130, 246, 0.35); }
+    .modal-actions .send { background: rgba(52, 211, 153, 0.15); border-color: rgba(52,211,153,0.4); color: var(--green); }
+    .modal-actions .send:hover { background: rgba(52, 211, 153, 0.3); }
+    .ai-draft-notice {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px;
+      background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.15);
+      font-size: 11px; color: var(--blue-glow); margin-bottom: 12px; font-family: var(--mono);
+    }
+
+    /* Pending actions panel */
+    .pending-card {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      background: var(--navy); border-radius: 8px; margin-bottom: 6px;
+      border: 1px solid var(--card-border);
+    }
+    .pending-card .type-badge {
+      font-size: 12px; padding: 3px 10px; border-radius: 8px; font-weight: 600; white-space: nowrap;
+    }
+    .pending-card .type-badge.schedule { background: rgba(59,130,246,0.1); color: var(--blue-glow); }
+    .pending-card .type-badge.deal { background: var(--green-bg); color: var(--green); }
+    .pending-card .type-badge.close { background: var(--yellow-bg); color: var(--yellow); }
+    .pending-card .type-badge.email { background: rgba(34,211,238,0.1); color: var(--cyan); }
+    .pending-card .detail { flex: 1; font-size: 12px; color: var(--slate); font-family: var(--mono); }
+    .pending-card .time { font-size: 10px; color: var(--slate-dim); font-family: var(--mono); }
+    .pending-card .remove-btn { background: none; border: none; color: var(--red); cursor: pointer; font-size: 14px; opacity: 0.6; }
+    .pending-card .remove-btn:hover { opacity: 1; }
+
+    /* Chatbot widget */
+    .chatbot-toggle {
+      position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
+      border-radius: 50%; background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+      border: none; color: #fff; font-size: 24px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(59,130,246,0.4); z-index: 900; transition: transform 0.2s;
+    }
+    .chatbot-toggle:hover { transform: scale(1.1); }
+    .chatbot-panel {
+      display: none; position: fixed; bottom: 92px; right: 24px; width: 400px; height: 520px;
+      background: var(--navy-light); border: 1px solid var(--card-border); border-radius: 16px;
+      z-index: 900; flex-direction: column; overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .chatbot-panel.open { display: flex; }
+    .chatbot-header {
+      padding: 16px 20px; border-bottom: 1px solid var(--card-border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .chatbot-header h4 { font-size: 14px; font-weight: 700; color: var(--white); }
+    .chatbot-header .close-chat { background: none; border: none; color: var(--slate-dim); cursor: pointer; font-size: 18px; }
+    .chatbot-messages { flex: 1; overflow-y: auto; padding: 16px 20px; }
+    .chat-msg { margin-bottom: 12px; max-width: 85%; }
+    .chat-msg.bot { margin-right: auto; }
+    .chat-msg.user { margin-left: auto; }
+    .chat-msg .bubble {
+      padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5;
+    }
+    .chat-msg.bot .bubble { background: var(--navy-mid); color: var(--white); border-bottom-left-radius: 4px; }
+    .chat-msg.user .bubble { background: rgba(59,130,246,0.2); color: var(--blue-glow); border-bottom-right-radius: 4px; }
+    .chatbot-input {
+      padding: 12px 16px; border-top: 1px solid var(--card-border); display: flex; gap: 8px;
+    }
+    .chatbot-input input {
+      flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--card-border);
+      background: var(--navy); color: var(--white); font-family: var(--font); font-size: 13px;
+    }
+    .chatbot-input input:focus { outline: none; border-color: var(--blue); }
+    .chatbot-input button {
+      padding: 10px 16px; border-radius: 8px; border: none; background: var(--blue);
+      color: #fff; cursor: pointer; font-family: var(--font); font-size: 13px;
+    }
 
     /* Toast */
     .toast {
-      position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: 10px;
-      font-size: 13px; font-weight: 500; z-index: 2000;
-      transform: translateY(100px); opacity: 0; transition: all 0.3s;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+      padding: 14px 24px; border-radius: 10px; font-size: 13px; font-weight: 500; z-index: 2000;
+      opacity: 0; transition: all 0.3s;
     }
-    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast.success { background: var(--green-bg); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
     .toast.info { background: rgba(59,130,246,0.15); color: var(--blue-glow); border: 1px solid rgba(59,130,246,0.3); }
+    .toast.warning { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(251,191,36,0.3); }
+
+    /* Loading */
+    .loading { text-align: center; padding: 80px 20px; color: var(--slate-dim); font-family: var(--mono); font-size: 13px; }
+    .loading::after {
+      content: ''; display: block; width: 32px; height: 32px; margin: 16px auto 0;
+      border: 2px solid var(--card-border); border-top-color: var(--blue); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+      .header { flex-direction: column; gap: 12px; }
+      .header-right { flex-direction: column; align-items: flex-start; }
+      .workflow-btns { flex-wrap: wrap; }
+      .container { padding: 16px; }
+      .chatbot-panel { width: calc(100vw - 32px); right: 16px; bottom: 84px; }
+    }
   </style>
 </head>
 <body>
@@ -253,8 +331,8 @@
   <!-- Schedule Follow-Up Modal -->
   <div class="modal-overlay" id="schedule-modal">
     <div class="modal">
-      <h3>📅 Schedule Follow-Up Call</h3>
-      <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">Renames the task to append "Call #2" (or increments existing call number) and reschedules 2 weeks out.</p>
+      <h3>📅 Schedule Follow-Up</h3>
+      <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">Reschedules the HubSpot task and appends "Call #2" (or increments).</p>
       <div class="modal-field">
         <label>Task / Client</label>
         <input type="text" id="sched-client" class="readonly" readonly>
@@ -276,7 +354,7 @@
       <h3>💼 Create HubSpot Deal</h3>
       <div class="modal-field">
         <label>Deal Name</label>
-        <input type="text" id="deal-name" class="readonly" readonly placeholder="ARO Agent Name - Client Name">
+        <input type="text" id="deal-name" class="readonly" readonly>
       </div>
       <div class="modal-field">
         <label>Deal Stage</label>
@@ -308,15 +386,14 @@
   <!-- Close Task Modal -->
   <div class="modal-overlay" id="close-modal">
     <div class="modal">
-      <h3>✅ Close Out HubSpot Task</h3>
-      <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">Marks the HubSpot task as completed and removes it from the active queue.</p>
+      <h3>✅ Close HubSpot Task</h3>
       <div class="modal-field">
         <label>Task / Client</label>
         <input type="text" id="close-client" class="readonly" readonly>
       </div>
       <div class="modal-field">
         <label>Close Notes (optional)</label>
-        <textarea id="close-notes" placeholder="Outcome of the call, any relevant notes..."></textarea>
+        <textarea id="close-notes" placeholder="Outcome, notes..." style="min-height:80px"></textarea>
       </div>
       <div class="modal-actions">
         <button class="cancel" onclick="closeModal('close-modal')">Cancel</button>
@@ -325,39 +402,101 @@
     </div>
   </div>
 
-  <!-- Email Draft Modal -->
+  <!-- Email Draft Modal — the big one -->
   <div class="modal-overlay" id="email-modal">
-    <div class="modal">
-      <h3>✉️ Draft Email Response</h3>
+    <div class="modal wide">
+      <h3>✉️ Email Response</h3>
+      <div class="ai-draft-notice" id="ai-draft-notice">
+        <span>🤖</span>
+        <span>AI-drafted by ARO Agent — review and edit before sending</span>
+      </div>
       <div class="modal-field">
-        <label>To (Agent)</label>
-        <input type="text" id="email-to" class="readonly" readonly>
+        <label>To</label>
+        <input type="text" id="email-to">
+      </div>
+      <div class="modal-field">
+        <label>CC (optional)</label>
+        <input type="text" id="email-cc" placeholder="Additional recipients">
       </div>
       <div class="modal-field">
         <label>Subject</label>
-        <input type="text" id="email-subject" placeholder="RE: ARO Update">
+        <input type="text" id="email-subject">
       </div>
       <div class="modal-field">
-        <label>Message</label>
-        <textarea id="email-body" placeholder="Type your response here..."></textarea>
+        <label>Message — <span style="color:var(--blue-glow);text-transform:none;letter-spacing:0">edit freely, this is your email</span></label>
+        <textarea id="email-body" style="min-height:220px;font-size:13px;line-height:1.7"></textarea>
       </div>
       <div class="modal-actions">
-        <button class="cancel" onclick="closeModal('email-modal')">Cancel</button>
-        <button class="confirm" onclick="confirmEmail()">Queue Draft</button>
+        <button class="cancel" onclick="closeModal('email-modal')">Discard</button>
+        <button class="confirm" onclick="confirmEmail('queue')">Save Draft</button>
+        <button class="send" onclick="confirmEmail('send')">✓ Approve &amp; Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Batch Run Modal -->
+  <div class="modal-overlay" id="batch-modal">
+    <div class="modal">
+      <h3>🔄 Run Batch</h3>
+      <p style="font-size:13px;color:var(--slate);margin-bottom:20px;">
+        Start a batch run to check all HubSpot renewal tasks against carrier portals, update values, and refresh the dashboard.
+      </p>
+      <div class="modal-field">
+        <label>When to run</label>
+        <select id="batch-when">
+          <option value="now">Run Now</option>
+          <option value="scheduled">Schedule for Later</option>
+        </select>
+      </div>
+      <div class="modal-field" id="batch-schedule-field" style="display:none">
+        <label>Scheduled Date & Time</label>
+        <input type="datetime-local" id="batch-datetime">
+      </div>
+      <div class="modal-field">
+        <label>Scope</label>
+        <select id="batch-scope">
+          <option value="all">All Tasks (Full Batch)</option>
+          <option value="errors">Errors Only (Re-process failures)</option>
+          <option value="expiring">Expiring Within 30 Days</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel" onclick="closeModal('batch-modal')">Cancel</button>
+        <button class="confirm" onclick="confirmBatch()">Start Batch</button>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
+  <!-- Chatbot -->
+  <button class="chatbot-toggle" id="chat-toggle" onclick="toggleChat()" title="Chat with ARO Agent">💬</button>
+  <div class="chatbot-panel" id="chat-panel">
+    <div class="chatbot-header">
+      <h4>📊 ARO Agent</h4>
+      <button class="close-chat" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chatbot-messages" id="chat-messages">
+      <div class="chat-msg bot">
+        <div class="bubble">Hey — I'm the ARO Agent. Ask me about any policy, carrier, task, or batch status. I can also look things up or draft emails for you.</div>
+      </div>
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="chat-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()">Send</button>
+    </div>
+  </div>
+
   <script>
     const DATA_URL = './data/results.json';
+    const PENDING_URL = './data/pending_actions.json';
     let _currentTask = null;
+    let _allData = null;
 
     async function loadData() {
       try {
         const resp = await fetch(DATA_URL + '?t=' + Date.now());
-        if (!resp.ok) throw new Error('No data file found');
+        if (!resp.ok) throw new Error('No data');
         return await resp.json();
       } catch (e) { return null; }
     }
@@ -380,40 +519,15 @@
     }
 
     function formatCurrency(val) {
-      if (!val || val === 'N/A') return 'N/A';
+      if (!val || val === 'N/A') return '—';
       const num = parseFloat(String(val).replace(/[^0-9.\-]/g, ''));
       if (isNaN(num)) return val;
       return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    function exportDialerCSV(tasks) {
-      const active = tasks.filter(t => t.status === 'active');
-      const headers = [
-        'Policy Number','Client Name','Client Age','Client Phone','Client Email',
-        'Agent','Agent Phone','Agent Email','Broker Dealer',
-        'Carrier','Product Name','Plan Type','Account Value','Surrender Value',
-        'Surrender Date','Age at Surrender','Issue Date','State','Statement','Documents'
-      ];
-      const rows = active.map(t => [
-        t.policy_number||'', t.applicant||'', t.client_age||'',
-        t.client_phone||'N/A', t.client_email||'N/A',
-        t.agents||'', t.agent_phone||'N/A', t.agent_email||'N/A', t.broker_dealer||'',
-        t.carrier||'', t.product_name||'', t.plan_type||t.plan||'',
-        t.account_value||'', t.surrender_value||'',
-        t.surrender_date||'', t.age_at_surrender||'', t.issue_date||'',
-        t.state||'', t.statement||'', (t.documents||[]).join('; ')
-      ]);
-      const csv = [headers,...rows].map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'aro_dialer_export_' + new Date().toISOString().slice(0,10) + '.csv';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
+    function getPending() { return JSON.parse(localStorage.getItem('aro_pending_actions') || '[]'); }
+    function setPending(arr) { localStorage.setItem('aro_pending_actions', JSON.stringify(arr)); }
 
-    // --- Modal helpers ---
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); _currentTask = null; }
     function showToast(msg, type='success') {
@@ -423,7 +537,57 @@
       setTimeout(() => t.classList.remove('show'), 3500);
     }
 
-    // --- Row action handlers ---
+    /* ---- Error detail helpers ---- */
+    function classifyError(task) {
+      const notes = (task.notes || '').toLowerCase();
+      if (notes.includes('not in nic')) return { reason: 'Carrier not in NIC database', detail: 'This carrier requires manual portal lookup — NIC (National Insurance Center) does not have coverage.', action: 'retry_manual' };
+      if (notes.includes('policy not found')) return { reason: 'Policy not found on carrier portal', detail: 'The policy number or client name did not return results. May be a name mismatch, transferred policy, or data entry error.', action: 'retry' };
+      if (notes.includes('portal')) return { reason: 'Carrier portal issue', detail: 'The carrier portal was unavailable or returned an error during lookup.', action: 'retry' };
+      if (notes.includes('timeout')) return { reason: 'Portal timeout', detail: 'The request to the carrier portal timed out.', action: 'retry' };
+      if (!task.policy_number) return { reason: 'Missing policy number', detail: 'No policy number available — manual lookup by client name required on carrier portal.', action: 'retry_manual' };
+      return { reason: notes || 'Unknown error', detail: 'Error details not classified. Review manually.', action: 'retry' };
+    }
+
+    /* ---- Email draft generation ---- */
+    function generateEmailDraft(task) {
+      const agent = (task.agents || 'there').split(',')[0].trim();
+      const agentFirst = agent.includes(',') ? agent.split(',')[1].trim().split(' ')[0] : agent.split(' ')[0];
+      const client = task.applicant || 'the client';
+
+      if (task.status === 'active' && task.account_value) {
+        return {
+          subject: `RE: ARO Update — ${client}`,
+          body: `Hi ${agentFirst},\n\nI'm reaching out regarding ${client}'s ${task.product_name || task.plan || ''} policy with ${task.carrier}.\n\nHere are the current details:\n\nPolicy Number: ${task.policy_number || 'N/A'}\nProduct: ${task.product_name || task.plan || 'N/A'}\nAccount Value: ${formatCurrency(task.account_value)}\nSurrender Value: ${formatCurrency(task.surrender_value)}\nSurrender Date: ${task.surrender_date || 'N/A'}\n\nThe surrender period on this policy is approaching. This is a great opportunity to review ${client}'s options and ensure their annuity strategy still aligns with their goals.\n\nWould you like to schedule a time to discuss next steps? I'm happy to run illustrations on alternative products if that would be helpful.\n\nBest regards,\nBSMG Annuity Renewals`
+        };
+      }
+
+      return {
+        subject: `RE: ARO Update — ${client}`,
+        body: `Hi ${agentFirst},\n\nI'm following up regarding ${client}'s policy with ${task.carrier}.\n\n[Add details here]\n\nPlease let me know if you have any questions.\n\nBest regards,\nBSMG Annuity Renewals`
+      };
+    }
+
+    /* ---- CSV Export ---- */
+    function exportDialerCSV(tasks) {
+      const active = tasks.filter(t => t.status === 'active');
+      const headers = ['Policy Number','Client Name','Client Phone','Client Email','Agent','Agent Phone','Agent Email','Broker Dealer','Carrier','Product Name','Plan Type','Account Value','Surrender Value','Surrender Date','Age at Surrender','Issue Date','State','Statement'];
+      const rows = active.map(t => [
+        t.policy_number||'', t.applicant||'', t.client_phone||'N/A', t.client_email||'N/A',
+        t.agents||'', t.agent_phone||'N/A', t.agent_email||'N/A', t.broker_dealer||'',
+        t.carrier||'', t.product_name||'', t.plan_type||t.plan||'',
+        t.account_value||'', t.surrender_value||'',
+        t.surrender_date||'', t.age_at_surrender||'', t.issue_date||'',
+        t.state||'', t.statement||''
+      ]);
+      const csv = [headers,...rows].map(r => r.map(c => '"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url;
+      a.download = 'aro_dialer_export_' + new Date().toISOString().slice(0,10) + '.csv';
+      a.click(); URL.revokeObjectURL(url);
+    }
+
+    /* ---- Row action handlers ---- */
     function openSchedule(idx) {
       _currentTask = window.__tasks[idx];
       document.getElementById('sched-client').value = _currentTask.applicant || _currentTask.app_id;
@@ -433,13 +597,9 @@
     }
     function confirmSchedule() {
       if (!_currentTask) return;
-      queueAction({
-        type: 'schedule_followup', task_id: _currentTask.app_id,
-        client: _currentTask.applicant, new_due_date: document.getElementById('sched-date').value,
-        rename_suffix: 'Call #2', timestamp: new Date().toISOString()
-      });
+      queueAction({ type: 'schedule_followup', task_id: _currentTask.app_id, client: _currentTask.applicant, new_due_date: document.getElementById('sched-date').value, rename_suffix: 'Call #2', timestamp: new Date().toISOString() });
       closeModal('schedule-modal');
-      showToast('Follow-up scheduled — agent will update HubSpot');
+      showToast('Follow-up queued');
     }
 
     function openDeal(idx) {
@@ -451,16 +611,9 @@
     }
     function confirmDeal() {
       if (!_currentTask) return;
-      queueAction({
-        type: 'create_deal', task_id: _currentTask.app_id,
-        deal_name: document.getElementById('deal-name').value,
-        deal_stage: '50/50', deal_owner: 'Tiffany Buchanan',
-        product_sub_category: 'Annuity', amount: document.getElementById('deal-amount').value,
-        associated_contact: document.getElementById('deal-agent').value,
-        timestamp: new Date().toISOString()
-      });
+      queueAction({ type: 'create_deal', task_id: _currentTask.app_id, deal_name: document.getElementById('deal-name').value, deal_stage: '50/50', deal_owner: 'Tiffany Buchanan', product_sub_category: 'Annuity', amount: document.getElementById('deal-amount').value, associated_contact: document.getElementById('deal-agent').value, timestamp: new Date().toISOString() });
       closeModal('deal-modal');
-      showToast('Deal creation queued for HubSpot');
+      showToast('Deal creation queued');
     }
 
     function openClose(idx) {
@@ -471,94 +624,223 @@
     }
     function confirmClose() {
       if (!_currentTask) return;
-      queueAction({
-        type: 'close_task', task_id: _currentTask.app_id,
-        client: _currentTask.applicant, notes: document.getElementById('close-notes').value,
-        timestamp: new Date().toISOString()
-      });
+      queueAction({ type: 'close_task', task_id: _currentTask.app_id, client: _currentTask.applicant, notes: document.getElementById('close-notes').value, timestamp: new Date().toISOString() });
       closeModal('close-modal');
-      showToast('Task close-out queued for HubSpot');
+      showToast('Task close queued');
     }
 
     function openEmail(idx) {
       _currentTask = window.__tasks[idx];
-      document.getElementById('email-to').value = _currentTask.agent_email || _currentTask.agents || 'N/A';
-      document.getElementById('email-subject').value = 'RE: ARO Update - ' + (_currentTask.applicant||'');
-      document.getElementById('email-body').value = '';
+      const draft = generateEmailDraft(_currentTask);
+      document.getElementById('email-to').value = _currentTask.agent_email || _currentTask.agents || '';
+      document.getElementById('email-cc').value = '';
+      document.getElementById('email-subject').value = draft.subject;
+      document.getElementById('email-body').value = draft.body;
+      document.getElementById('ai-draft-notice').style.display = 'flex';
       openModal('email-modal');
     }
-    function confirmEmail() {
+    function confirmEmail(mode) {
       if (!_currentTask) return;
-      queueAction({
-        type: 'draft_email', task_id: _currentTask.app_id,
+      const action = {
+        type: mode === 'send' ? 'send_email' : 'draft_email',
+        task_id: _currentTask.app_id,
         to: document.getElementById('email-to').value,
+        cc: document.getElementById('email-cc').value,
         subject: document.getElementById('email-subject').value,
         body: document.getElementById('email-body').value,
+        approved: mode === 'send',
         timestamp: new Date().toISOString()
-      });
+      };
+      queueAction(action);
       closeModal('email-modal');
-      showToast('Email draft queued', 'info');
+      if (mode === 'send') {
+        showToast('✓ Email approved — queued for send', 'success');
+      } else {
+        showToast('Draft saved to queue', 'info');
+      }
+    }
+
+    function openRetry(appId) {
+      queueAction({ type: 'retry_task', task_id: appId, timestamp: new Date().toISOString() });
+      showToast('Retry queued for next batch');
+    }
+
+    function openManualLookup(appId) {
+      queueAction({ type: 'manual_lookup', task_id: appId, timestamp: new Date().toISOString() });
+      showToast('Manual lookup queued — agent will check carrier portal');
     }
 
     function queueAction(action) {
-      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
+      const pending = getPending();
       pending.push(action);
-      localStorage.setItem('aro_pending_actions', JSON.stringify(pending));
+      setPending(pending);
+      updatePendingBadge();
       renderPendingActions();
     }
 
-    function renderPendingActions() {
-      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
-      let panel = document.getElementById('pending-panel');
-      if (!panel) return;
+    function removePending(idx) {
+      const pending = getPending();
+      pending.splice(idx, 1);
+      setPending(pending);
+      updatePendingBadge();
+      renderPendingActions();
+      showToast('Action removed');
+    }
+
+    function clearAllPending() {
+      setPending([]);
+      updatePendingBadge();
+      renderPendingActions();
+      showToast('Queue cleared');
+    }
+
+    function updatePendingBadge() {
+      const count = getPending().length;
+      const badge = document.getElementById('pending-badge');
+      if (badge) {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline' : 'none';
+      }
+    }
+
+    function processQueuedActions() {
+      const pending = getPending();
       if (pending.length === 0) {
-        panel.innerHTML = '<p style="color:var(--slate-dim);font-size:12px;font-family:var(--mono);padding:12px;">No pending actions. Use the row buttons to queue tasks for the agent.</p>';
+        showToast('No actions in queue', 'warning');
         return;
       }
-      const typeLabels = { schedule_followup: '📅 Reschedule', create_deal: '💼 Create Deal', close_task: '✅ Close Task', draft_email: '✉️ Email Draft' };
-      const typeColors = { schedule_followup: 'var(--blue)', create_deal: 'var(--green)', close_task: 'var(--yellow)', draft_email: 'var(--cyan)' };
+      // Write to pending_actions.json via the queue — ARO Agent picks up on next check
+      // In production this would POST to an API; for now we flag it
+      queueAction({ type: 'process_all', timestamp: new Date().toISOString(), count: pending.length });
+      showToast(`${pending.length} actions submitted for processing`, 'info');
+    }
+
+    /* ---- Batch modal ---- */
+    function openBatchModal() {
+      document.getElementById('batch-when').value = 'now';
+      document.getElementById('batch-schedule-field').style.display = 'none';
+      document.getElementById('batch-scope').value = 'all';
+      openModal('batch-modal');
+    }
+
+    document.addEventListener('change', function(e) {
+      if (e.target.id === 'batch-when') {
+        document.getElementById('batch-schedule-field').style.display = e.target.value === 'scheduled' ? 'block' : 'none';
+      }
+    });
+
+    function confirmBatch() {
+      const when = document.getElementById('batch-when').value;
+      const scope = document.getElementById('batch-scope').value;
+      const action = {
+        type: 'batch_run',
+        when: when,
+        scheduled_time: when === 'scheduled' ? document.getElementById('batch-datetime').value : null,
+        scope: scope,
+        timestamp: new Date().toISOString()
+      };
+      queueAction(action);
+      closeModal('batch-modal');
+      if (when === 'now') {
+        showToast('🔄 Batch run initiated — dashboard will update when complete', 'info');
+      } else {
+        showToast('📅 Batch scheduled for ' + document.getElementById('batch-datetime').value, 'info');
+      }
+    }
+
+    /* ---- Chatbot ---- */
+    function toggleChat() {
+      document.getElementById('chat-panel').classList.toggle('open');
+    }
+
+    function sendChat() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+
+      const messages = document.getElementById('chat-messages');
+      messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${escapeHtml(msg)}</div></div>`;
+
+      // Local responses for common queries
+      const response = handleChatLocally(msg);
+      setTimeout(() => {
+        messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${response}</div></div>`;
+        messages.scrollTop = messages.scrollHeight;
+      }, 400);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function handleChatLocally(msg) {
+      const lower = msg.toLowerCase();
+      if (!_allData) return 'Dashboard data not loaded yet. Try refreshing the page.';
+
+      const tasks = _allData.tasks || [];
+      const active = tasks.filter(t => t.status === 'active');
+      const errors = tasks.filter(t => t.status === 'error');
+
+      if (lower.includes('how many') && lower.includes('active')) return `There are <strong>${active.length}</strong> active policies in the current batch, with a total value of <strong>${formatCurrency(active.reduce((sum, t) => sum + parseFloat(String(t.account_value||'0').replace(/[^0-9.\-]/g,'')), 0))}</strong>.`;
+      if (lower.includes('how many') && lower.includes('error')) return `There are <strong>${errors.length}</strong> errors. Most are due to carriers not being in the NIC database — they need manual portal lookups.`;
+      if (lower.includes('error') && lower.includes('why')) return `The ${errors.length} errors are primarily: <strong>${[...new Set(errors.map(e => e.carrier))].join(', ')}</strong> — these carriers aren't covered by NIC, so I need to log into their portals directly via Keeper credentials.`;
+      if (lower.includes('pending') || lower.includes('queue')) { const p = getPending(); return p.length === 0 ? 'No actions in the queue right now.' : `There are <strong>${p.length}</strong> pending actions in the queue. Click "Process Queued Actions" to submit them.`; }
+      if (lower.includes('surrender') && lower.includes('soon')) {
+        const now = new Date();
+        const soon = active.filter(t => { const d = new Date(t.surrender_date); return d && (d - now) / 86400000 <= 14; });
+        if (soon.length === 0) return 'No policies surrendering within the next 2 weeks.';
+        return `<strong>${soon.length}</strong> policies surrender within 2 weeks:<br>` + soon.map(t => `• ${t.applicant} — ${t.carrier} — ${t.surrender_date}`).join('<br>');
+      }
+
+      // Search by name
+      const nameMatch = tasks.filter(t => (t.applicant||'').toLowerCase().includes(lower) || (t.agents||'').toLowerCase().includes(lower));
+      if (nameMatch.length > 0 && msg.length > 3) {
+        return nameMatch.map(t => `<strong>${t.applicant}</strong> — ${t.carrier} ${t.product_name||t.plan||''}<br>Status: ${t.status} | Value: ${formatCurrency(t.account_value)} | Surrender: ${t.surrender_date||'N/A'}`).join('<br><br>');
+      }
+
+      return 'I can help with: policy lookups (type a name), batch status, error details, pending actions, or surrender timelines. For complex requests, use the main chat interface with Tylor.';
+    }
+
+    /* ---- Render ---- */
+    function renderPendingActions() {
+      const panel = document.getElementById('pending-panel');
+      if (!panel) return;
+      const pending = getPending();
+      if (pending.length === 0) {
+        panel.innerHTML = '<p style="color:var(--slate-dim);font-size:12px;font-family:var(--mono);padding:8px 0;">No pending actions. Use row buttons to queue tasks.</p>';
+        return;
+      }
+      const typeLabels = { schedule_followup: '📅 Reschedule', create_deal: '💼 Create Deal', close_task: '✅ Close Task', draft_email: '✉️ Draft', send_email: '📤 Send Email', retry_task: '🔄 Retry', manual_lookup: '🔍 Manual Lookup', batch_run: '🔄 Batch Run', process_all: '⚡ Process All' };
+      const typeClasses = { schedule_followup: 'schedule', create_deal: 'deal', close_task: 'close', draft_email: 'email', send_email: 'email', retry_task: 'schedule', manual_lookup: 'schedule', batch_run: 'schedule', process_all: 'deal' };
       panel.innerHTML = pending.map((a, i) => `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy);border-radius:8px;margin-bottom:6px;border:1px solid var(--card-border);">
-          <span style="font-size:14px;">${(typeLabels[a.type]||a.type)}</span>
-          <span style="flex:1;font-size:12px;color:var(--slate);font-family:var(--mono);">${a.client||a.deal_name||a.to||a.task_id}</span>
-          <span style="font-size:10px;color:var(--slate-dim);font-family:var(--mono);">${new Date(a.timestamp).toLocaleTimeString()}</span>
-          <button onclick="removePending(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;" title="Remove">✕</button>
+        <div class="pending-card">
+          <span class="type-badge ${typeClasses[a.type]||''}">${typeLabels[a.type]||a.type}</span>
+          <span class="detail">${a.client||a.deal_name||a.to||a.task_id||''}</span>
+          <span class="time">${new Date(a.timestamp).toLocaleTimeString()}</span>
+          <button class="remove-btn" onclick="removePending(${i})" title="Remove">✕</button>
         </div>
       `).join('');
     }
 
-    function removePending(idx) {
-      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
-      pending.splice(idx, 1);
-      localStorage.setItem('aro_pending_actions', JSON.stringify(pending));
-      renderPendingActions();
-      showToast('Action removed from queue');
-    }
-
-    function clearAllPending() {
-      localStorage.removeItem('aro_pending_actions');
-      renderPendingActions();
-      showToast('All pending actions cleared');
-    }
-
     function render(data) {
+      _allData = data;
       const app = document.getElementById('app');
       if (!data || !data.batch) {
         app.innerHTML = `
-          <div class="header"><div class="header-left"><h1>ARO Dashboard</h1><div class="subtitle">BSMG Annuity Renewal Operations</div></div></div>
-          <div class="empty-state"><div class="icon">📋</div><p>No batch data available yet.</p>
-          <p style="margin-top:8px;font-size:12px;font-family:var(--mono);">The agent will populate this dashboard after its first run.</p></div>`;
+          <div class="header"><div class="header-left"><h1>ARO Command Center</h1><div class="subtitle">BSMG Annuity Renewal Operations</div></div></div>
+          <div style="text-align:center;padding:60px 20px;color:var(--slate-dim)"><p style="font-size:48px;margin-bottom:16px;opacity:0.5">📋</p><p>No batch data available yet.</p></div>`;
         return;
       }
 
       const b = data.batch;
       const tasks = data.tasks || [];
-      const history = data.history || [];
       const active = tasks.filter(t => t.status === 'active');
       const inactive = tasks.filter(t => t.status === 'inactive');
       const errors = tasks.filter(t => t.status === 'error');
       const ds = dataStatus(b.timestamp);
-      const successRate = b.total > 0 ? Math.round(((b.total - (b.errors || errors.length)) / b.total) * 100) : 0;
+      const pendingCount = getPending().length;
 
       let totalValue = 0;
       active.forEach(t => {
@@ -568,21 +850,45 @@
 
       app.innerHTML = `
         <div class="header">
-          <div class="header-left"><h1>ARO Dashboard</h1><div class="subtitle">BSMG Annuity Renewal Operations</div></div>
+          <div class="header-left">
+            <h1>ARO Command Center</h1>
+            <div class="subtitle">BSMG Annuity Renewal Operations</div>
+          </div>
           <div class="header-right">
-            <div class="last-updated">Updated ${timeSince(b.timestamp)}</div>
-            <div class="batch-id">${b.timestamp || ''}</div>
-            <span class="status-badge ${ds}">${ds === 'live' ? '● Live' : ds === 'stale' ? '◐ Stale' : '○ Outdated'}</span>
+            <div class="workflow-btns">
+              <button class="wf-btn primary" onclick="openBatchModal()">🔄 Run Batch</button>
+              <button class="wf-btn green" onclick="processQueuedActions()">
+                ⚡ Process Queue
+                <span class="badge-count" id="pending-badge" style="${pendingCount>0?'':'display:none'}">${pendingCount}</span>
+              </button>
+            </div>
+            <div class="header-meta">
+              <div class="last-updated">Updated ${timeSince(b.timestamp)}</div>
+              <span class="status-badge ${ds}">${ds === 'live' ? '● Live' : ds === 'stale' ? '◐ Stale' : '○ Outdated'}</span>
+            </div>
           </div>
         </div>
 
         <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Total Tasks</div><div class="stat-value blue">${b.total || tasks.length}</div></div>
-          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value green">${active.length}</div><div class="stat-sub">ready for contact</div></div>
-          <div class="stat-card"><div class="stat-label">Inactive</div><div class="stat-value" style="color:var(--slate-dim)">${inactive.length}</div><div class="stat-sub">removed from queue</div></div>
-          <div class="stat-card"><div class="stat-label">Errors</div><div class="stat-value ${errors.length > 0 ? 'red' : ''}">${errors.length}</div><div class="stat-sub">${errors.length > 0 ? 'needs review' : 'none'}</div></div>
-          <div class="stat-card"><div class="stat-label">Success Rate</div><div class="stat-value ${successRate >= 90 ? 'green' : successRate >= 80 ? 'yellow' : 'red'}">${successRate}%</div><div class="stat-sub">target: 90%+</div></div>
-          <div class="stat-card"><div class="stat-label">Active Value</div><div class="stat-value cyan">${totalValue > 0 ? '$' + (totalValue / 1000).toFixed(0) + 'k' : 'N/A'}</div><div class="stat-sub">${totalValue > 0 ? formatCurrency(totalValue) : 'pending extraction'}</div></div>
+          <div class="stat-card">
+            <div class="stat-label">Total Policies</div>
+            <div class="stat-value blue">${b.total || tasks.length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Active — Ready for Contact</div>
+            <div class="stat-value green">${active.length}</div>
+            <div class="stat-sub">${totalValue > 0 ? formatCurrency(totalValue) + ' total value' : ''}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Inactive</div>
+            <div class="stat-value" style="color:var(--slate-dim)">${inactive.length}</div>
+            <div class="stat-sub">surrendered / lapsed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Errors — Needs Review</div>
+            <div class="stat-value ${errors.length > 0 ? 'red' : ''}">${errors.length}</div>
+            <div class="stat-sub">${errors.length > 0 ? [...new Set(errors.map(e=>e.carrier))].slice(0,3).join(', ') : 'none'}</div>
+          </div>
         </div>
 
         <div class="tabs" id="tabs">
@@ -593,72 +899,23 @@
         </div>
 
         <div class="action-bar" id="action-bar">
-          <button class="action-btn primary" onclick="exportDialerCSV(window.__tasks)">Export Active to Dialer CSV</button>
+          <button class="action-btn primary" onclick="exportDialerCSV(window.__tasks)">📥 Export Active to CSV</button>
         </div>
 
         <div class="table-container">
           <table>
             <thead>
-              <tr>
-                <th>Status</th>
-                <th>Client</th>
-                <th>Age</th>
-                <th>State</th>
-                <th>Policy #</th>
-                <th>Carrier</th>
-                <th>Product</th>
-                <th>Plan Type</th>
-                <th>Acct Value</th>
-                <th>Surr Value</th>
-                <th>Surr Date</th>
-                <th>Age@Surr</th>
-                <th>Agent</th>
-                <th>Agent Ph</th>
-                <th>Agent Email</th>
-                <th>Broker Dealer</th>
-                <th>Statement</th>
-                <th>Docs</th>
-                <th>Actions</th>
-              </tr>
+              <tr id="table-header"></tr>
             </thead>
             <tbody id="task-table"></tbody>
           </table>
         </div>
 
-        ${b.processing_time || b.ai_calls !== undefined ? `
-        <div class="section-header"><div class="section-title">Batch Metrics</div></div>
-        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
-          ${b.processing_time ? `<div class="stat-card"><div class="stat-label">Processing Time</div><div class="stat-value blue" style="font-size:24px">${b.processing_time}</div></div>` : ''}
-          ${b.ai_calls !== undefined ? `<div class="stat-card"><div class="stat-label">AI Calls</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.ai_calls}</div></div>` : ''}
-          ${b.ai_cost !== undefined ? `<div class="stat-card"><div class="stat-label">AI Cost</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.ai_cost}</div></div>` : ''}
-          ${b.manual_interventions !== undefined ? `<div class="stat-card"><div class="stat-label">Manual Assists</div><div class="stat-value" style="font-size:24px;color:var(--slate)">${b.manual_interventions}</div></div>` : ''}
-        </div>` : ''}
-
-        ${history.length > 1 ? `
-        <div class="section-header"><div class="section-title">Batch History (Last ${history.length} runs)</div></div>
-        <div class="table-container">
-          <table style="min-width:600px">
-            <thead><tr><th>Date</th><th>Total</th><th>Active</th><th>Inactive</th><th>Errors</th><th>Success Rate</th><th>Time</th></tr></thead>
-            <tbody>
-              ${history.map(h => {
-                const sr = h.total > 0 ? Math.round(((h.total - h.errors) / h.total) * 100) : 0;
-                return `<tr>
-                  <td style="font-family:var(--mono);color:var(--white)">${h.date||''}</td>
-                  <td style="font-family:var(--mono)">${h.total}</td>
-                  <td style="font-family:var(--mono);color:var(--green)">${h.active}</td>
-                  <td style="font-family:var(--mono)">${h.inactive}</td>
-                  <td style="font-family:var(--mono);${h.errors>0?'color:var(--red)':''}">${h.errors}</td>
-                  <td style="font-family:var(--mono);${sr>=90?'color:var(--green)':sr>=80?'color:var(--yellow)':'color:var(--red)'}">${sr}%</td>
-                  <td style="font-family:var(--mono);color:var(--slate-dim)">${h.processing_time||''}</td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>` : ''}
-
         <div class="section-header">
-          <div class="section-title">Pending Actions Queue</div>
-          <button class="action-btn" onclick="clearAllPending()" style="font-size:11px;padding:4px 12px;">Clear All</button>
+          <div class="section-title">Pending Actions <span style="font-size:13px;font-weight:400;color:var(--slate-dim)">(${pendingCount})</span></div>
+          <div style="display:flex;gap:8px;">
+            <button class="action-btn" onclick="clearAllPending()" style="font-size:11px;padding:4px 12px;">Clear All</button>
+          </div>
         </div>
         <div class="table-container" style="padding:12px;">
           <div id="pending-panel"></div>
@@ -666,8 +923,9 @@
       `;
 
       window.__tasks = tasks;
-      renderTable(active);
+      renderTableView('active', active, errors, inactive, tasks);
       renderPendingActions();
+      updatePendingBadge();
 
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -675,26 +933,68 @@
           tab.classList.add('active');
           const view = tab.dataset.tab;
           const actionBar = document.getElementById('action-bar');
-          if (view === 'active') { renderTable(active); actionBar.style.display = 'flex'; }
-          else if (view === 'inactive') { renderTable(inactive); actionBar.style.display = 'none'; }
-          else if (view === 'errors') { renderTable(errors); actionBar.style.display = 'none'; }
-          else { renderTable(tasks); actionBar.style.display = 'flex'; }
+          if (view === 'active') { renderTableView('active', active, errors, inactive, tasks); actionBar.style.display = 'flex'; }
+          else if (view === 'inactive') { renderTableView('inactive', active, errors, inactive, tasks); actionBar.style.display = 'none'; }
+          else if (view === 'errors') { renderTableView('errors', active, errors, inactive, tasks); actionBar.style.display = 'none'; }
+          else { renderTableView('all', active, errors, inactive, tasks); actionBar.style.display = 'flex'; }
         });
       });
     }
 
-    function renderTable(rows) {
+    function renderTableView(view, active, errors, inactive, all) {
+      const header = document.getElementById('table-header');
       const tbody = document.getElementById('task-table');
-      if (!rows.length) {
-        tbody.innerHTML = '<tr><td colspan="19" style="text-align:center;padding:32px;color:var(--slate-dim)">No tasks in this view</td></tr>';
+
+      if (view === 'errors') {
+        header.innerHTML = '<th>Carrier</th><th>Client</th><th>Policy #</th><th>Plan</th><th>Surrender Date</th><th>Age@Surr</th><th>Premium</th><th>State</th><th>Agent</th><th>Error Details</th><th>Actions</th>';
+        if (errors.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--slate-dim)">No errors 🎉</td></tr>';
+          return;
+        }
+        tbody.innerHTML = errors.map(t => {
+          const err = classifyError(t);
+          return `<tr>
+            <td class="carrier" style="font-weight:500;color:var(--white)">${t.carrier||'N/A'}</td>
+            <td class="name">${t.applicant||'N/A'}</td>
+            <td class="policy-num">${t.policy_number||'<span style="color:var(--red)">Missing</span>'}</td>
+            <td style="font-size:11px">${t.plan||''}</td>
+            <td style="font-family:var(--mono);font-size:11px">${t.surrender_date||''}</td>
+            <td style="font-family:var(--mono);font-size:11px">${t.age_at_surrender||''}</td>
+            <td class="value">${formatCurrency(t.base_premium)}</td>
+            <td>${t.state||''}</td>
+            <td style="font-size:11px">${t.agents||'N/A'}</td>
+            <td>
+              <div class="error-detail" style="border:0;padding:4px 0;margin:0;background:transparent">
+                <div class="error-reason">⚠ ${err.reason}</div>
+                <div class="error-meta">${err.detail}</div>
+              </div>
+            </td>
+            <td>
+              <div class="row-actions">
+                <button class="row-btn" onclick="openManualLookup('${t.app_id}')" title="Queue manual portal lookup">🔍</button>
+                <button class="row-btn" onclick="openRetry('${t.app_id}')" title="Retry in next batch">🔄</button>
+                <button class="row-btn email" onclick="openEmail(${window.__tasks.indexOf(t)})" title="Email agent">✉️</button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
         return;
       }
+
+      // Standard view (active, inactive, all)
+      header.innerHTML = '<th>Status</th><th>Client</th><th>State</th><th>Policy #</th><th>Carrier</th><th>Product</th><th>Plan Type</th><th>Acct Value</th><th>Surr Value</th><th>Surr Date</th><th>Age@Surr</th><th>Agent</th><th>Agent Ph</th><th>BD</th><th>Stmt</th><th>Actions</th>';
+
+      let rows = view === 'active' ? active : view === 'inactive' ? inactive : all;
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="16" style="text-align:center;padding:32px;color:var(--slate-dim)">No tasks in this view</td></tr>`;
+        return;
+      }
+
       tbody.innerHTML = rows.map(t => {
         const idx = window.__tasks.indexOf(t);
         return `<tr>
           <td><span class="status-pill ${t.status}">${t.status==='active'?'✓ Active':t.status==='inactive'?'✗ Inactive':'⚠ Error'}</span></td>
           <td class="name">${t.applicant||'N/A'}</td>
-          <td style="font-family:var(--mono);font-size:11px">${t.client_age||''}</td>
           <td style="font-size:11px">${t.state||''}</td>
           <td class="policy-num">${t.policy_number||t.app_id||'N/A'}</td>
           <td class="carrier">${t.carrier||'N/A'}</td>
@@ -704,20 +1004,20 @@
           <td class="value">${t.status==='active'?formatCurrency(t.surrender_value):''}</td>
           <td style="font-family:var(--mono);font-size:11px">${t.surrender_date||''}</td>
           <td style="font-family:var(--mono);font-size:11px">${t.age_at_surrender||''}</td>
-          <td class="agent-name">${t.agents||'N/A'}</td>
+          <td style="font-size:11px;white-space:nowrap">${t.agents||'N/A'}</td>
           <td style="font-family:var(--mono);font-size:11px">${t.agent_phone||''}</td>
-          <td style="font-size:11px">${t.agent_email||''}</td>
           <td style="font-size:11px">${t.broker_dealer||''}</td>
           <td style="font-size:11px">${t.statement||''}</td>
-          <td>${(t.documents||[]).map(d=>'<a class="doc-link" href="docs/'+d+'" target="_blank">📄</a>').join(' ')||''}</td>
           <td>
             <div class="row-actions">
               ${t.status==='active'?`
-                <button class="row-btn schedule" onclick="openSchedule(${idx})" title="Schedule follow-up (+2 weeks)">📅</button>
-                <button class="row-btn deal" onclick="openDeal(${idx})" title="Create HubSpot deal">💼</button>
-                <button class="row-btn close" onclick="openClose(${idx})" title="Close out task on HubSpot">✅</button>
-                <button class="row-btn email" onclick="openEmail(${idx})" title="Draft email response">✉️</button>
-              `:''}
+                <button class="row-btn schedule" onclick="openSchedule(${idx})" title="Schedule follow-up">📅</button>
+                <button class="row-btn deal" onclick="openDeal(${idx})" title="Create deal">💼</button>
+                <button class="row-btn close" onclick="openClose(${idx})" title="Close task">✅</button>
+                <button class="row-btn email" onclick="openEmail(${idx})" title="Draft email">✉️</button>
+              `:`
+                <button class="row-btn email" onclick="openEmail(${idx})" title="Draft email">✉️</button>
+              `}
             </div>
           </td>
         </tr>`;
