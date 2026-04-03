@@ -257,8 +257,16 @@
       box-shadow: 0 4px 20px rgba(59,130,246,0.4); z-index: 900; transition: transform 0.2s;
     }
     .chatbot-toggle:hover { transform: scale(1.1); }
+    .chatbot-toggle .online-dot {
+      position: absolute; top: 2px; right: 2px; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--green); border: 2px solid var(--navy);
+    }
+    .chatbot-toggle .offline-dot {
+      position: absolute; top: 2px; right: 2px; width: 12px; height: 12px;
+      border-radius: 50%; background: var(--red); border: 2px solid var(--navy);
+    }
     .chatbot-panel {
-      display: none; position: fixed; bottom: 92px; right: 24px; width: 400px; height: 520px;
+      display: none; position: fixed; bottom: 92px; right: 24px; width: 420px; height: 560px;
       background: var(--navy-light); border: 1px solid var(--card-border); border-radius: 16px;
       z-index: 900; flex-direction: column; overflow: hidden;
       box-shadow: 0 8px 40px rgba(0,0,0,0.5);
@@ -268,17 +276,39 @@
       padding: 16px 20px; border-bottom: 1px solid var(--card-border);
       display: flex; justify-content: space-between; align-items: center;
     }
-    .chatbot-header h4 { font-size: 14px; font-weight: 700; color: var(--white); }
+    .chatbot-header h4 { font-size: 14px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 8px; }
+    .chatbot-header .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .chatbot-header .status-dot.connected { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .chatbot-header .status-dot.disconnected { background: var(--red); }
+    .chatbot-header .status-dot.connecting { background: var(--yellow); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .chatbot-header .header-actions { display: flex; gap: 8px; align-items: center; }
+    .chatbot-header .settings-btn { background: none; border: none; color: var(--slate-dim); cursor: pointer; font-size: 16px; }
+    .chatbot-header .settings-btn:hover { color: var(--white); }
     .chatbot-header .close-chat { background: none; border: none; color: var(--slate-dim); cursor: pointer; font-size: 18px; }
+    .chatbot-header .close-chat:hover { color: var(--white); }
     .chatbot-messages { flex: 1; overflow-y: auto; padding: 16px 20px; }
-    .chat-msg { margin-bottom: 12px; max-width: 85%; }
+    .chat-msg { margin-bottom: 14px; max-width: 88%; }
     .chat-msg.bot { margin-right: auto; }
     .chat-msg.user { margin-left: auto; }
+    .chat-msg .sender { font-size: 10px; color: var(--slate-dim); margin-bottom: 4px; font-family: var(--mono); }
+    .chat-msg.user .sender { text-align: right; }
     .chat-msg .bubble {
-      padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5;
+      padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.6;
+      white-space: pre-wrap; word-wrap: break-word;
     }
     .chat-msg.bot .bubble { background: var(--navy-mid); color: var(--white); border-bottom-left-radius: 4px; }
     .chat-msg.user .bubble { background: rgba(59,130,246,0.2); color: var(--blue-glow); border-bottom-right-radius: 4px; }
+    .chat-msg .bubble p { margin: 0 0 8px 0; }
+    .chat-msg .bubble p:last-child { margin-bottom: 0; }
+    .chat-msg .bubble strong { color: var(--white); }
+    .chat-msg .bubble code { background: rgba(0,0,0,0.3); padding: 1px 4px; border-radius: 4px; font-family: var(--mono); font-size: 12px; }
+    .chat-typing { margin-bottom: 12px; }
+    .chat-typing .bubble { background: var(--navy-mid); color: var(--slate-dim); padding: 10px 14px; border-radius: 12px; border-bottom-left-radius: 4px; }
+    .typing-dots span { animation: dotPulse 1.4s infinite; display: inline-block; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse { 0%,60%,100% { opacity: 0.3; } 30% { opacity: 1; } }
     .chatbot-input {
       padding: 12px 16px; border-top: 1px solid var(--card-border); display: flex; gap: 8px;
     }
@@ -287,9 +317,29 @@
       background: var(--navy); color: var(--white); font-family: var(--font); font-size: 13px;
     }
     .chatbot-input input:focus { outline: none; border-color: var(--blue); }
+    .chatbot-input input:disabled { opacity: 0.5; }
     .chatbot-input button {
       padding: 10px 16px; border-radius: 8px; border: none; background: var(--blue);
-      color: #fff; cursor: pointer; font-family: var(--font); font-size: 13px;
+      color: #fff; cursor: pointer; font-family: var(--font); font-size: 13px; transition: background 0.15s;
+    }
+    .chatbot-input button:hover { background: var(--blue-glow); }
+    .chatbot-input button:disabled { opacity: 0.5; cursor: default; }
+    /* Settings panel */
+    .chat-settings {
+      display: none; padding: 16px 20px; border-bottom: 1px solid var(--card-border);
+      background: rgba(15,26,46,0.8);
+    }
+    .chat-settings.open { display: block; }
+    .chat-settings label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--slate-dim); margin-bottom: 4px; }
+    .chat-settings input {
+      width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--card-border);
+      background: var(--navy); color: var(--white); font-family: var(--mono); font-size: 11px; margin-bottom: 10px;
+    }
+    .chat-settings input:focus { outline: none; border-color: var(--blue); }
+    .chat-settings .save-settings {
+      padding: 6px 16px; border-radius: 6px; border: 1px solid rgba(52,211,153,0.3);
+      background: rgba(52,211,153,0.1); color: var(--green); font-size: 11px;
+      cursor: pointer; font-family: var(--font);
     }
 
     /* Toast */
@@ -470,20 +520,37 @@
   <div class="toast" id="toast"></div>
 
   <!-- Chatbot -->
-  <button class="chatbot-toggle" id="chat-toggle" onclick="toggleChat()" title="Chat with ARO Agent">💬</button>
+  <button class="chatbot-toggle" id="chat-toggle" onclick="toggleChat()" title="Chat with ARO Agent">
+    💬
+    <span id="chat-conn-dot" class="offline-dot"></span>
+  </button>
   <div class="chatbot-panel" id="chat-panel">
     <div class="chatbot-header">
-      <h4>📊 ARO Agent</h4>
-      <button class="close-chat" onclick="toggleChat()">✕</button>
+      <h4>
+        <span class="status-dot disconnected" id="chat-status-dot"></span>
+        ARO Agent
+      </h4>
+      <div class="header-actions">
+        <button class="settings-btn" onclick="toggleSettings()" title="Connection settings">⚙</button>
+        <button class="close-chat" onclick="toggleChat()">✕</button>
+      </div>
+    </div>
+    <div class="chat-settings" id="chat-settings">
+      <label>Gateway URL</label>
+      <input type="text" id="cfg-gateway-url" placeholder="wss://your-gateway:18789">
+      <label>Auth Token</label>
+      <input type="password" id="cfg-gateway-token" placeholder="Gateway auth token">
+      <button class="save-settings" onclick="saveSettings()">Save &amp; Connect</button>
     </div>
     <div class="chatbot-messages" id="chat-messages">
       <div class="chat-msg bot">
-        <div class="bubble">Hey — I'm the ARO Agent. Ask me about any policy, carrier, task, or batch status. I can also look things up or draft emails for you.</div>
+        <div class="sender">ARO Agent</div>
+        <div class="bubble">Hey! I'm the ARO Agent. Configure the gateway connection (⚙) to chat live, or ask me anything about the dashboard data right here.</div>
       </div>
     </div>
     <div class="chatbot-input">
-      <input type="text" id="chat-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
-      <button onclick="sendChat()">Send</button>
+      <input type="text" id="chat-input" placeholder="Message ARO Agent..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button id="chat-send-btn" onclick="sendChat()">Send</button>
     </div>
   </div>
 
@@ -748,9 +815,176 @@
       }
     }
 
-    /* ---- Chatbot ---- */
+    /* ---- Chatbot — Gateway WebSocket integration ---- */
+    let _ws = null;
+    let _wsConnected = false;
+    let _wsReconnectTimer = null;
+    let _chatSessionKey = null;
+    let _pendingResponse = false;
+
+    function getChatConfig() {
+      return {
+        url: localStorage.getItem('aro_gw_url') || '',
+        token: localStorage.getItem('aro_gw_token') || ''
+      };
+    }
+
     function toggleChat() {
-      document.getElementById('chat-panel').classList.toggle('open');
+      const panel = document.getElementById('chat-panel');
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open') && !_wsConnected) {
+        const cfg = getChatConfig();
+        if (cfg.url && cfg.token) connectGateway();
+      }
+    }
+
+    function toggleSettings() {
+      const s = document.getElementById('chat-settings');
+      s.classList.toggle('open');
+      if (s.classList.contains('open')) {
+        const cfg = getChatConfig();
+        document.getElementById('cfg-gateway-url').value = cfg.url;
+        document.getElementById('cfg-gateway-token').value = cfg.token;
+      }
+    }
+
+    function saveSettings() {
+      const url = document.getElementById('cfg-gateway-url').value.trim();
+      const token = document.getElementById('cfg-gateway-token').value.trim();
+      localStorage.setItem('aro_gw_url', url);
+      localStorage.setItem('aro_gw_token', token);
+      document.getElementById('chat-settings').classList.remove('open');
+      if (_ws) { _ws.close(); _ws = null; }
+      if (url && token) connectGateway();
+    }
+
+    function setConnectionStatus(status) {
+      const dot = document.getElementById('chat-status-dot');
+      const toggleDot = document.getElementById('chat-conn-dot');
+      dot.className = 'status-dot ' + status;
+      toggleDot.className = (status === 'connected' ? 'online-dot' : 'offline-dot');
+      _wsConnected = status === 'connected';
+      document.getElementById('chat-input').placeholder = _wsConnected ? 'Message ARO Agent...' : 'Configure connection (⚙) to chat live';
+    }
+
+    function connectGateway() {
+      const cfg = getChatConfig();
+      if (!cfg.url || !cfg.token) return;
+
+      if (_ws) { _ws.close(); _ws = null; }
+      setConnectionStatus('connecting');
+
+      let wsUrl = cfg.url;
+      // Normalize: ensure ws:// or wss://
+      if (!wsUrl.startsWith('ws://') && !wsUrl.startsWith('wss://')) {
+        wsUrl = (location.protocol === 'https:' ? 'wss://' : 'ws://') + wsUrl;
+      }
+      // Remove trailing slash
+      wsUrl = wsUrl.replace(/\/+$/, '');
+
+      try {
+        _ws = new WebSocket(wsUrl);
+      } catch (e) {
+        setConnectionStatus('disconnected');
+        addBotMsg('Connection error: ' + e.message);
+        return;
+      }
+
+      _ws.onopen = () => {
+        // Authenticate
+        _ws.send(JSON.stringify({ type: 'auth', token: cfg.token }));
+      };
+
+      _ws.onmessage = (evt) => {
+        let data;
+        try { data = JSON.parse(evt.data); } catch { return; }
+
+        if (data.type === 'auth.ok' || data.type === 'auth.success' || (data.type === 'auth' && data.ok)) {
+          setConnectionStatus('connected');
+          addBotMsg('Connected to ARO Agent. How can I help?');
+          // Load recent history
+          _ws.send(JSON.stringify({ type: 'chat.history', limit: 20 }));
+          return;
+        }
+
+        if (data.type === 'auth.error' || data.type === 'auth.fail') {
+          setConnectionStatus('disconnected');
+          addBotMsg('Authentication failed. Check your token in settings (⚙).');
+          _ws.close();
+          return;
+        }
+
+        // Chat history response
+        if (data.type === 'chat.history') {
+          const msgs = data.messages || data.history || [];
+          if (msgs.length > 0) {
+            const container = document.getElementById('chat-messages');
+            // Clear default welcome
+            container.innerHTML = '';
+            msgs.forEach(m => {
+              const role = m.role || m.type || 'bot';
+              if (role === 'user' || role === 'human') {
+                addUserMsg(m.text || m.content || '', false);
+              } else if (role === 'assistant' || role === 'bot') {
+                addBotMsg(m.text || m.content || '', false);
+              }
+            });
+            scrollChat();
+          }
+          return;
+        }
+
+        // Incoming assistant message (streamed or complete)
+        if (data.type === 'chat.message' || data.type === 'message') {
+          removeTyping();
+          _pendingResponse = false;
+          const text = data.text || data.content || data.message || '';
+          if (text && text !== 'NO_REPLY' && text !== 'HEARTBEAT_OK') {
+            addBotMsg(text);
+          }
+          return;
+        }
+
+        // Streaming chunks
+        if (data.type === 'chat.delta' || data.type === 'delta' || data.type === 'stream.delta') {
+          const chunk = data.text || data.content || data.delta || '';
+          appendToStream(chunk);
+          return;
+        }
+
+        if (data.type === 'chat.stream.start' || data.type === 'stream.start') {
+          removeTyping();
+          startStream();
+          return;
+        }
+
+        if (data.type === 'chat.stream.end' || data.type === 'stream.end') {
+          endStream();
+          _pendingResponse = false;
+          return;
+        }
+
+        // Typing indicator
+        if (data.type === 'chat.typing' || data.type === 'typing') {
+          showTyping();
+          return;
+        }
+      };
+
+      _ws.onclose = () => {
+        setConnectionStatus('disconnected');
+        _ws = null;
+        // Auto-reconnect after 5s
+        if (_wsReconnectTimer) clearTimeout(_wsReconnectTimer);
+        _wsReconnectTimer = setTimeout(() => {
+          const cfg = getChatConfig();
+          if (cfg.url && cfg.token) connectGateway();
+        }, 5000);
+      };
+
+      _ws.onerror = () => {
+        setConnectionStatus('disconnected');
+      };
     }
 
     function sendChat() {
@@ -759,49 +993,132 @@
       if (!msg) return;
       input.value = '';
 
-      const messages = document.getElementById('chat-messages');
-      messages.innerHTML += `<div class="chat-msg user"><div class="bubble">${escapeHtml(msg)}</div></div>`;
+      addUserMsg(msg);
 
-      // Local responses for common queries
-      const response = handleChatLocally(msg);
-      setTimeout(() => {
-        messages.innerHTML += `<div class="chat-msg bot"><div class="bubble">${response}</div></div>`;
-        messages.scrollTop = messages.scrollHeight;
-      }, 400);
-      messages.scrollTop = messages.scrollHeight;
+      if (_wsConnected && _ws) {
+        // Send via gateway WebSocket
+        _ws.send(JSON.stringify({ type: 'chat.send', text: msg }));
+        _pendingResponse = true;
+        showTyping();
+      } else {
+        // Fallback: local dashboard data queries
+        const response = handleChatLocally(msg);
+        setTimeout(() => addBotMsg(response), 300);
+      }
+    }
+
+    // ---- Chat UI helpers ----
+    function addUserMsg(text, scroll=true) {
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.className = 'chat-msg user';
+      div.innerHTML = `<div class="sender">You</div><div class="bubble">${escapeHtml(text)}</div>`;
+      container.appendChild(div);
+      if (scroll) scrollChat();
+    }
+
+    function addBotMsg(text, scroll=true) {
+      const container = document.getElementById('chat-messages');
+      removeTyping();
+      const div = document.createElement('div');
+      div.className = 'chat-msg bot';
+      div.innerHTML = `<div class="sender">ARO Agent</div><div class="bubble">${formatMarkdown(text)}</div>`;
+      container.appendChild(div);
+      if (scroll) scrollChat();
+    }
+
+    let _streamEl = null;
+    function startStream() {
+      const container = document.getElementById('chat-messages');
+      removeTyping();
+      _streamEl = document.createElement('div');
+      _streamEl.className = 'chat-msg bot';
+      _streamEl.innerHTML = `<div class="sender">ARO Agent</div><div class="bubble"></div>`;
+      container.appendChild(_streamEl);
+      scrollChat();
+    }
+    function appendToStream(chunk) {
+      if (!_streamEl) startStream();
+      const bubble = _streamEl.querySelector('.bubble');
+      bubble.textContent += chunk;
+      scrollChat();
+    }
+    function endStream() {
+      if (_streamEl) {
+        const bubble = _streamEl.querySelector('.bubble');
+        bubble.innerHTML = formatMarkdown(bubble.textContent);
+        _streamEl = null;
+      }
+    }
+
+    function showTyping() {
+      if (document.getElementById('typing-indicator')) return;
+      const container = document.getElementById('chat-messages');
+      const div = document.createElement('div');
+      div.id = 'typing-indicator';
+      div.className = 'chat-typing';
+      div.innerHTML = '<div class="bubble"><span class="typing-dots"><span>●</span> <span>●</span> <span>●</span></span></div>';
+      container.appendChild(div);
+      scrollChat();
+    }
+    function removeTyping() {
+      const t = document.getElementById('typing-indicator');
+      if (t) t.remove();
+    }
+
+    function scrollChat() {
+      const c = document.getElementById('chat-messages');
+      c.scrollTop = c.scrollHeight;
     }
 
     function escapeHtml(str) {
       return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
+    function formatMarkdown(text) {
+      // Basic markdown: bold, code, newlines
+      let html = escapeHtml(text);
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      html = html.replace(/\n/g, '<br>');
+      return html;
+    }
+
+    // ---- Local fallback for offline queries ----
     function handleChatLocally(msg) {
       const lower = msg.toLowerCase();
-      if (!_allData) return 'Dashboard data not loaded yet. Try refreshing the page.';
+      if (!_allData) return 'Dashboard data not loaded. Try refreshing.';
 
       const tasks = _allData.tasks || [];
       const active = tasks.filter(t => t.status === 'active');
       const errors = tasks.filter(t => t.status === 'error');
 
-      if (lower.includes('how many') && lower.includes('active')) return `There are <strong>${active.length}</strong> active policies in the current batch, with a total value of <strong>${formatCurrency(active.reduce((sum, t) => sum + parseFloat(String(t.account_value||'0').replace(/[^0-9.\-]/g,'')), 0))}</strong>.`;
-      if (lower.includes('how many') && lower.includes('error')) return `There are <strong>${errors.length}</strong> errors. Most are due to carriers not being in the NIC database — they need manual portal lookups.`;
-      if (lower.includes('error') && lower.includes('why')) return `The ${errors.length} errors are primarily: <strong>${[...new Set(errors.map(e => e.carrier))].join(', ')}</strong> — these carriers aren't covered by NIC, so I need to log into their portals directly via Keeper credentials.`;
-      if (lower.includes('pending') || lower.includes('queue')) { const p = getPending(); return p.length === 0 ? 'No actions in the queue right now.' : `There are <strong>${p.length}</strong> pending actions in the queue. Click "Process Queued Actions" to submit them.`; }
+      if (lower.includes('how many') && lower.includes('active')) return `There are **${active.length}** active policies with a total value of **${formatCurrency(active.reduce((sum, t) => sum + parseFloat(String(t.account_value||'0').replace(/[^0-9.\-]/g,'')), 0))}**.`;
+      if (lower.includes('how many') && lower.includes('error')) return `There are **${errors.length}** errors, mostly carriers not in the NIC database.`;
+      if (lower.includes('error') && lower.includes('why')) return `Errors by carrier: **${[...new Set(errors.map(e => e.carrier))].join(', ')}** — these need manual portal lookups.`;
+      if (lower.includes('pending') || lower.includes('queue')) { const p = getPending(); return p.length === 0 ? 'No pending actions.' : `**${p.length}** actions in the queue.`; }
       if (lower.includes('surrender') && lower.includes('soon')) {
         const now = new Date();
         const soon = active.filter(t => { const d = new Date(t.surrender_date); return d && (d - now) / 86400000 <= 14; });
-        if (soon.length === 0) return 'No policies surrendering within the next 2 weeks.';
-        return `<strong>${soon.length}</strong> policies surrender within 2 weeks:<br>` + soon.map(t => `• ${t.applicant} — ${t.carrier} — ${t.surrender_date}`).join('<br>');
+        if (soon.length === 0) return 'No policies surrendering within 2 weeks.';
+        return `**${soon.length}** policies surrender within 2 weeks:\n` + soon.map(t => `• ${t.applicant} — ${t.carrier} — ${t.surrender_date}`).join('\n');
       }
 
-      // Search by name
       const nameMatch = tasks.filter(t => (t.applicant||'').toLowerCase().includes(lower) || (t.agents||'').toLowerCase().includes(lower));
       if (nameMatch.length > 0 && msg.length > 3) {
-        return nameMatch.map(t => `<strong>${t.applicant}</strong> — ${t.carrier} ${t.product_name||t.plan||''}<br>Status: ${t.status} | Value: ${formatCurrency(t.account_value)} | Surrender: ${t.surrender_date||'N/A'}`).join('<br><br>');
+        return nameMatch.map(t => `**${t.applicant}** — ${t.carrier} ${t.product_name||t.plan||''}\nStatus: ${t.status} | Value: ${formatCurrency(t.account_value)} | Surrender: ${t.surrender_date||'N/A'}`).join('\n\n');
       }
 
-      return 'I can help with: policy lookups (type a name), batch status, error details, pending actions, or surrender timelines. For complex requests, use the main chat interface with Tylor.';
+      return 'I\'m in offline mode (no gateway connection). I can search dashboard data — try a client name, "how many active", or "surrendering soon". Connect via ⚙ for full capabilities.';
     }
+
+    // Auto-connect on load
+    (function() {
+      const cfg = getChatConfig();
+      if (cfg.url && cfg.token) {
+        setTimeout(connectGateway, 1000);
+      }
+    })();
 
     /* ---- Render ---- */
     function renderPendingActions() {
