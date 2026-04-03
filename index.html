@@ -1228,6 +1228,7 @@
           <button class="tab" data-tab="inactive">Inactive <span class="badge">${inactive.length}</span></button>
           ${errors.length > 0 ? `<button class="tab" data-tab="errors">Errors <span class="badge red">${errors.length}</span></button>` : ''}
           <button class="tab" data-tab="all">All <span class="badge">${tasks.length}</span></button>
+          <button class="tab" data-tab="illustrations">Illustrations <span class="badge" style="background:rgba(59,130,246,0.15);color:var(--blue-glow)" id="illust-badge">0</span></button>
         </div>
 
         <div class="action-bar" id="action-bar">
@@ -1268,9 +1269,16 @@
           if (view === 'active') { renderTableView('active', active, errors, inactive, tasks); actionBar.style.display = 'flex'; }
           else if (view === 'inactive') { renderTableView('inactive', active, errors, inactive, tasks); actionBar.style.display = 'none'; }
           else if (view === 'errors') { renderTableView('errors', active, errors, inactive, tasks); actionBar.style.display = 'none'; }
+          else if (view === 'illustrations') { renderIllustrationsView(); actionBar.style.display = 'none'; }
           else { renderTableView('all', active, errors, inactive, tasks); actionBar.style.display = 'flex'; }
         });
       });
+
+      // Load illustrations
+      fetch('data/illustrations.json').then(r=>r.json()).then(illusts => {
+        window.__illustrations = illusts;
+        document.getElementById('illust-badge').textContent = illusts.length;
+      }).catch(()=>{ window.__illustrations = []; });
     }
 
     function renderTableView(view, active, errors, inactive, all) {
@@ -1352,6 +1360,36 @@
               `}
             </div>
           </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderIllustrationsView() {
+      const header = document.getElementById('table-header');
+      const tbody = document.getElementById('task-table');
+      const illusts = window.__illustrations || [];
+
+      header.innerHTML = '<th>Client</th><th>Carrier</th><th>Product</th><th>Premium</th><th>Qualification</th><th>State</th><th>Rate</th><th>Agent</th><th>Generated</th><th>Download</th>';
+
+      if (illusts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:32px;color:var(--slate-dim)">No illustrations yet</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = illusts.map(il => {
+        const date = il.generated ? new Date(il.generated).toLocaleDateString() : '';
+        const statusColor = il.status === 'complete' ? 'var(--green)' : 'var(--yellow)';
+        return `<tr>
+          <td class="name">${il.client}</td>
+          <td class="carrier" style="font-weight:500;color:var(--white)">${il.carrier}</td>
+          <td style="font-size:12px">${il.product} <span style="font-size:10px;color:var(--slate-dim)">(${il.type})</span></td>
+          <td class="value">${il.premium}</td>
+          <td>${il.qualification}</td>
+          <td>${il.state}</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">${il.rate}</td>
+          <td style="font-size:12px">${il.agent}</td>
+          <td style="font-family:var(--mono);font-size:11px">${date}</td>
+          <td>${il.file ? `<a href="data/${il.file}" target="_blank" style="color:var(--blue-glow);text-decoration:none">📄 PDF</a>` : '<span style="color:var(--slate-dim)">pending</span>'}</td>
         </tr>`;
       }).join('');
     }

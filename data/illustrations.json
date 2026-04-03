@@ -1,0 +1,19 @@
+[
+  {
+    "id": "illust-001",
+    "client": "Jane Doe",
+    "dob": "04/15/1951",
+    "carrier": "Athene",
+    "product": "MaxRate 5",
+    "type": "Multi-Year Guaranteed Annuity",
+    "premium": "$100,000",
+    "qualification": "IRA",
+    "state": "North Carolina",
+    "agent": "John Doe",
+    "rate": "5.10%",
+    "guarantee_period": "5 years",
+    "generated": "2026-04-03T12:30:00-04:00",
+    "file": "statements/JaneDoe_MaxRate5_illustration.pdf",
+    "status": "complete"
+  }
+]
