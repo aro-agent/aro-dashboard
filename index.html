@@ -477,7 +477,8 @@
         <textarea id="email-body" style="min-height:220px;font-size:13px;line-height:1.7"></textarea>
       </div>
       <div class="modal-actions">
-        <button class="cancel" onclick="closeModal('email-modal')">Discard</button>
+        <button class="cancel" onclick="closeModal('email-modal')">Cancel</button>
+        <button class="cancel" onclick="discardEmail()" style="color:var(--red)">Discard</button>
         <button class="confirm" onclick="confirmEmail('queue')">Save Draft</button>
         <button class="send" onclick="confirmEmail('send')">✓ Approve &amp; Send</button>
       </div>
@@ -734,6 +735,11 @@
       } else {
         showToast('Draft saved to queue', 'info');
       }
+    }
+
+    function discardEmail() {
+      closeModal('email-modal');
+      showToast('Draft discarded', 'warning');
     }
 
     function openRetry(appId) {
