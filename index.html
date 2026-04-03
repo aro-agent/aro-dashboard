@@ -504,11 +504,41 @@
       const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
       pending.push(action);
       localStorage.setItem('aro_pending_actions', JSON.stringify(pending));
-      // Also write to pending_actions.json for agent pickup
-      fetch('./data/pending_actions.json', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify(pending)
-      }).catch(() => {});
+      renderPendingActions();
+    }
+
+    function renderPendingActions() {
+      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
+      let panel = document.getElementById('pending-panel');
+      if (!panel) return;
+      if (pending.length === 0) {
+        panel.innerHTML = '<p style="color:var(--slate-dim);font-size:12px;font-family:var(--mono);padding:12px;">No pending actions. Use the row buttons to queue tasks for the agent.</p>';
+        return;
+      }
+      const typeLabels = { schedule_followup: '📅 Reschedule', create_deal: '💼 Create Deal', close_task: '✅ Close Task', draft_email: '✉️ Email Draft' };
+      const typeColors = { schedule_followup: 'var(--blue)', create_deal: 'var(--green)', close_task: 'var(--yellow)', draft_email: 'var(--cyan)' };
+      panel.innerHTML = pending.map((a, i) => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy);border-radius:8px;margin-bottom:6px;border:1px solid var(--card-border);">
+          <span style="font-size:14px;">${(typeLabels[a.type]||a.type)}</span>
+          <span style="flex:1;font-size:12px;color:var(--slate);font-family:var(--mono);">${a.client||a.deal_name||a.to||a.task_id}</span>
+          <span style="font-size:10px;color:var(--slate-dim);font-family:var(--mono);">${new Date(a.timestamp).toLocaleTimeString()}</span>
+          <button onclick="removePending(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;" title="Remove">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removePending(idx) {
+      const pending = JSON.parse(localStorage.getItem('aro_pending_actions') || '[]');
+      pending.splice(idx, 1);
+      localStorage.setItem('aro_pending_actions', JSON.stringify(pending));
+      renderPendingActions();
+      showToast('Action removed from queue');
+    }
+
+    function clearAllPending() {
+      localStorage.removeItem('aro_pending_actions');
+      renderPendingActions();
+      showToast('All pending actions cleared');
     }
 
     function render(data) {
@@ -625,10 +655,19 @@
             </tbody>
           </table>
         </div>` : ''}
+
+        <div class="section-header">
+          <div class="section-title">Pending Actions Queue</div>
+          <button class="action-btn" onclick="clearAllPending()" style="font-size:11px;padding:4px 12px;">Clear All</button>
+        </div>
+        <div class="table-container" style="padding:12px;">
+          <div id="pending-panel"></div>
+        </div>
       `;
 
       window.__tasks = tasks;
       renderTable(active);
+      renderPendingActions();
 
       document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
