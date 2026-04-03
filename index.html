@@ -592,6 +592,15 @@
       return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    function renderStatement(val) {
+      if (!val) return '<span style="color:var(--slate-dim)">—</span>';
+      if (val === 'Available') return '<span style="color:var(--yellow)">Available</span>';
+      if (val === 'Unavailable' || val === 'N/A') return '<span style="color:var(--slate-dim)">N/A</span>';
+      // It's a file path — render as download link
+      const filename = val.split('/').pop();
+      return `<a href="data/${val}" target="_blank" download style="color:var(--cyan);text-decoration:none;font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:4px;" title="${filename}">📄 PDF</a>`;
+    }
+
     function getPending() { return JSON.parse(localStorage.getItem('aro_pending_actions') || '[]'); }
     function setPending(arr) { localStorage.setItem('aro_pending_actions', JSON.stringify(arr)); }
 
@@ -1324,7 +1333,7 @@
           <td style="font-size:11px;white-space:nowrap">${t.agents||'N/A'}</td>
           <td style="font-family:var(--mono);font-size:11px">${t.agent_phone||''}</td>
           <td style="font-size:11px">${t.broker_dealer||''}</td>
-          <td style="font-size:11px">${t.statement||''}</td>
+          <td style="font-size:11px">${renderStatement(t.statement)}</td>
           <td>
             <div class="row-actions">
               ${t.status==='active'?`
