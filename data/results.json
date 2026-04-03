@@ -25,7 +25,7 @@
       "plan": "MaxRate 3",
       "plan_type": "Fixed Annuity",
       "product_name": "Athene MYG 3 MVA",
-      "statement": "Available",
+      "statement": "statements/AA10050086_contract_detail.pdf",
       "agent_phone": "(555) 234-8901",
       "agent_email": "scoles@advisorgroup.com",
       "broker_dealer": "Advisor Group",
